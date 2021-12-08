@@ -15,8 +15,8 @@ menu:
       url: /tags/
       weight: 20
     - identifier: friend
-      name: friend
-      url: https://mouuii.com
+      name: friends
+      url: /friends
       weight: 30
 
 params:
