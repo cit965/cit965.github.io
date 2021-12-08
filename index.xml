@@ -25,5 +25,14 @@
     </item>
     
     
+    <item>
+      <title>friends</title>
+      <link>/friends/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/friends/</guid>
+      <description>friends</description>
+    </item>
+    
   </channel>
 </rss>
