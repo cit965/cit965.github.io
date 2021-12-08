@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>CIT计算机兴趣小组</title>
-    <link>/</link>
-    <description>Recent content on CIT计算机兴趣小组</description>
+    <title>Posts on CIT计算机兴趣小组</title>
+    <link>/posts/</link>
+    <description>Recent content in Posts on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 Dec 2021 19:51:43 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 08 Dec 2021 19:51:43 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Begin</title>
       <link>/posts/begin/</link>
@@ -23,7 +23,6 @@
 不以盈利为目的，以陪伴个人成长为价值导向，以改变中国互联网畸形价值观为使命
 落实  建立b站系列课程，输出系列课程，比如计算机操作系统，k8s源码 建立学习小组，陪伴指导式学习，互相促进共同成长 建立讲师小组，探索生态闭环，输出价值观和技术 不做推广，只靠吸引  </description>
     </item>
-    
     
   </channel>
 </rss>
