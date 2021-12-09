@@ -6,9 +6,18 @@
     <description>Recent content on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 Dec 2021 19:51:43 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 09 Dec 2021 23:25:34 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Begin</title>
+      <title>历程</title>
+      <link>/posts/timeline/</link>
+      <pubDate>Thu, 09 Dec 2021 23:25:34 +0800</pubDate>
+      
+      <guid>/posts/timeline/</guid>
+      <description> 2021.12.08 创立组织，上线 hugo 网站 2021.12.09 网站添加 www.cit965.com 域名  </description>
+    </item>
+    
+    <item>
+      <title>初心</title>
       <link>/posts/begin/</link>
       <pubDate>Wed, 08 Dec 2021 19:51:43 +0800</pubDate>
       
@@ -24,15 +33,24 @@
 落实  建立b站系列课程，输出系列课程，比如计算机操作系统，k8s源码 建立学习小组，陪伴指导式学习，互相促进共同成长 建立讲师小组，探索生态闭环，输出价值观和技术 不做推广，只靠吸引  </description>
     </item>
     
-    
     <item>
-      <title>friends</title>
-      <link>/friends/</link>
+      <title></title>
+      <link>/courses/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/friends/</guid>
-      <description>friends</description>
+      <guid>/courses/</guid>
+      <description>课程列表</description>
     </item>
+    
+    <item>
+      <title></title>
+      <link>/maintainers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/maintainers/</guid>
+      <description>社区维护者</description>
+    </item>
+    
     
   </channel>
 </rss>

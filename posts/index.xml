@@ -6,9 +6,18 @@
     <description>Recent content in Posts on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 Dec 2021 19:51:43 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 09 Dec 2021 23:25:34 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Begin</title>
+      <title>历程</title>
+      <link>/posts/timeline/</link>
+      <pubDate>Thu, 09 Dec 2021 23:25:34 +0800</pubDate>
+      
+      <guid>/posts/timeline/</guid>
+      <description> 2021.12.08 创立组织，上线 hugo 网站 2021.12.09 网站添加 www.cit965.com 域名  </description>
+    </item>
+    
+    <item>
+      <title>初心</title>
       <link>/posts/begin/</link>
       <pubDate>Wed, 08 Dec 2021 19:51:43 +0800</pubDate>
       
