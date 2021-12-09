@@ -1,5 +1,5 @@
 ---
-title: "Begin"
+title: "初心"
 date: 2021-12-08T19:51:43+08:00
 draft: false
 ---

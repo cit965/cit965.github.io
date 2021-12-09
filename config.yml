@@ -6,18 +6,26 @@ theme: "PaperMod"
 
 menu:
   main:
-    - identifier: categories
-      name: categories
-      url: /categories/
+    - identifier: maintainers
+      name: 讲师
+      url: /maintainers
+      weight: 100
+    - identifier: courses
+      name: 课程
+      url: /courses
       weight: 10
-    - identifier: tags
-      name: tags
-      url: /tags/
-      weight: 20
-    - identifier: friend
-      name: friends
-      url: /friends
-      weight: 30
+    - identifier: categories
+      name: 分类
+      url: /categories/
+      weight: 40
+    # - identifier: tags
+    #   name: 标签
+    #   url: /tags/
+    #   weight: 40
+    - identifier: timeline
+      name: 历程
+      url: /posts/timeline/
+      weight: 40      
 
 params:
     homeInfoParams:
