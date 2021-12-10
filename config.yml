@@ -28,13 +28,13 @@ menu:
       weight: 40      
 
 params:
-    homeInfoParams:
-        Title: "Welcome"
-        Content: >
-            欢迎加入CIT兴趣学习小组，**CIT** 是一个非赢利性组织，由一群爱好计算机的工程师发起，从这出发，成为顶级工程师。
-             - Join us become better
-             - Do give a 🌟 on Github !
-             - This is based on theme [Paper](https://github.com/nanxiaobei/hugo-paper).
-
-
+  homeInfoParams:
+      Title: "Welcome"
+      Content: >
+          欢迎加入CIT兴趣学习小组，**CIT** 是一个非赢利性组织，由一群爱好计算机的工程师发起，从这出发，成为顶级工程师。
+            - Join us become better
+            - Do give a 🌟 on Github !
+            - This is based on theme [Paper](https://github.com/nanxiaobei/hugo-paper).
+  comments: true
+      
 
