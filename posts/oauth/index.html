@@ -209,7 +209,7 @@
 客户端想要在一段时间内获得用户数据资源访问权限，需要请求资源服务器，由资源服务器来询问用户是否同意授权。用户同意以后，资源服务器可以向客户端颁发令牌。客户端通过令牌，去请求数据，这种互联网最普遍的授权方式被称作OAuth</p>
 <p>如果你对oauth流程不了解，oauth原理可以看<a href="https://www.ruanyifeng.com/blog/2019/04/oauth_design.html">阮一峰oauth介绍</a>，以及<a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps">github接口文档</a>。</p>
 <p>这里简单描述下获取token数据流程，大致有两个阶段，如下图：
-<img loading="lazy" src="http://r3wcvgugj.hd-bkt.clouddn.com/nextjs-oauth-github.png" alt="xx"  />
+<img loading="lazy" src="https://raw.githubusercontent.com/cit965/blog-picture/master/nextjs-oauth-github.png" alt="xx"  />
 </p>
 <ul>
 <li>阶段一：前端访问服务器auth接口，服务器请求 github 并且重定向到用户授权页面</li>
