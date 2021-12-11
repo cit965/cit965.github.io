@@ -38,3 +38,6 @@ params:
   comments: true
       
 
+taxonomies:
+  category: categories
+  tag: tags
