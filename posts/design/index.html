@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>产品理论分析 | CIT计算机兴趣小组</title>
+<meta name="keywords" content="" />
+<meta name="description" content="背景 随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。
+业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等&hellip;为微小团体做好服务是我们的核心价值！
+受众 拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强
+创造价值过程服务  积累   我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧
+  合作   我们提供更靠谱的合伙人，助力筛选人才
+  推广   我们提供流量，不同价值有不同的流量入口，我们提供一系列入口
+  持续   我们提供持续创造的环境，让你越做越大
+ 产品形态 手机端主要是社交为主，寻求合作，价值推广；web端主要是沉静式学习，助力价值的积累
+名词解释  劳动业余价值：劳动力在工作时间之外创造的价值 劳动企业价值：劳动力在企业创造的价值 消费价值：劳动力消费掉的价值  ">
+<meta name="author" content="">
+<link rel="canonical" href="/posts/design/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.85.0" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="产品理论分析" />
+<meta property="og:description" content="背景 随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。
+业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等&hellip;为微小团体做好服务是我们的核心价值！
+受众 拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强
+创造价值过程服务  积累   我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧
+  合作   我们提供更靠谱的合伙人，助力筛选人才
+  推广   我们提供流量，不同价值有不同的流量入口，我们提供一系列入口
+  持续   我们提供持续创造的环境，让你越做越大
+ 产品形态 手机端主要是社交为主，寻求合作，价值推广；web端主要是沉静式学习，助力价值的积累
+名词解释  劳动业余价值：劳动力在工作时间之外创造的价值 劳动企业价值：劳动力在企业创造的价值 消费价值：劳动力消费掉的价值  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/design/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-16T22:45:58&#43;08:00" />
+<meta property="article:modified_time" content="2021-12-16T22:45:58&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="产品理论分析"/>
+<meta name="twitter:description" content="背景 随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。
+业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等&hellip;为微小团体做好服务是我们的核心价值！
+受众 拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强
+创造价值过程服务  积累   我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧
+  合作   我们提供更靠谱的合伙人，助力筛选人才
+  推广   我们提供流量，不同价值有不同的流量入口，我们提供一系列入口
+  持续   我们提供持续创造的环境，让你越做越大
+ 产品形态 手机端主要是社交为主，寻求合作，价值推广；web端主要是沉静式学习，助力价值的积累
+名词解释  劳动业余价值：劳动力在工作时间之外创造的价值 劳动企业价值：劳动力在企业创造的价值 消费价值：劳动力消费掉的价值  "/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/posts/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "产品理论分析",
+      "item": "/posts/design/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "产品理论分析",
+  "name": "产品理论分析",
+  "description": "背景 随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。\n业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等\u0026hellip;为微小团体做好服务是我们的核心价值！\n受众 拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强\n创造价值过程服务  积累   我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧\n  合作   我们提供更靠谱的合伙人，助力筛选人才\n  推广   我们提供流量，不同价值有不同的流量入口，我们提供一系列入口\n  持续   我们提供持续创造的环境，让你越做越大\n 产品形态 手机端主要是社交为主，寻求合作，价值推广；web端主要是沉静式学习，助力价值的积累\n名词解释  劳动业余价值：劳动力在工作时间之外创造的价值 劳动企业价值：劳动力在企业创造的价值 消费价值：劳动力消费掉的价值  ",
+  "keywords": [
+    
+  ],
+  "articleBody": "背景 随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。\n业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等…为微小团体做好服务是我们的核心价值！\n受众 拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强\n创造价值过程服务  积累   我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧\n  合作   我们提供更靠谱的合伙人，助力筛选人才\n  推广   我们提供流量，不同价值有不同的流量入口，我们提供一系列入口\n  持续   我们提供持续创造的环境，让你越做越大\n 产品形态 手机端主要是社交为主，寻求合作，价值推广；web端主要是沉静式学习，助力价值的积累\n名词解释  劳动业余价值：劳动力在工作时间之外创造的价值 劳动企业价值：劳动力在企业创造的价值 消费价值：劳动力消费掉的价值  ",
+  "wordCount" : "21",
+  "inLanguage": "en",
+  "datePublished": "2021-12-16T22:45:58+08:00",
+  "dateModified": "2021-12-16T22:45:58+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/posts/design/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "CIT计算机兴趣小组",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="CIT计算机兴趣小组 (Alt + H)">CIT计算机兴趣小组</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/courses" title="课程">
+                    <span>课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/timeline/" title="历程">
+                    <span>历程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/maintainers" title="讲师">
+                    <span>讲师</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      产品理论分析
+    </h1>
+    <div class="post-meta"><span title='2021-12-16 22:45:58 +0800 +0800'>December 16, 2021</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h3 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h3>
+<p>随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。</p>
+<p>业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等&hellip;为微小团体做好服务是我们的核心价值！</p>
+<h3 id="受众">受众<a hidden class="anchor" aria-hidden="true" href="#受众">#</a></h3>
+<p>拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强</p>
+<h3 id="创造价值过程服务">创造价值过程服务<a hidden class="anchor" aria-hidden="true" href="#创造价值过程服务">#</a></h3>
+<ul>
+<li>积累</li>
+</ul>
+<blockquote>
+<p>我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧</p>
+</blockquote>
+<ul>
+<li>合作</li>
+</ul>
+<blockquote>
+<p>我们提供更靠谱的合伙人，助力筛选人才</p>
+</blockquote>
+<ul>
+<li>推广</li>
+</ul>
+<blockquote>
+<p>我们提供流量，不同价值有不同的流量入口，我们提供一系列入口</p>
+</blockquote>
+<ul>
+<li>持续</li>
+</ul>
+<blockquote>
+<p>我们提供持续创造的环境，让你越做越大</p>
+</blockquote>
+<h3 id="产品形态">产品形态<a hidden class="anchor" aria-hidden="true" href="#产品形态">#</a></h3>
+<p>手机端主要是社交为主，<em>寻求合作</em>，<em>价值推广</em>；web端主要是沉静式学习，助力价值的<em>积累</em></p>
+<h3 id="名词解释">名词解释<a hidden class="anchor" aria-hidden="true" href="#名词解释">#</a></h3>
+<ol>
+<li>劳动业余价值：劳动力在工作时间之外创造的价值</li>
+<li>劳动企业价值：劳动力在企业创造的价值</li>
+<li>消费价值：劳动力消费掉的价值</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer><script src="https://utteranc.es/client.js"
+        repo="cit965/blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2021 <a href="/">CIT计算机兴趣小组</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

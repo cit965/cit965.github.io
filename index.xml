@@ -6,7 +6,24 @@
     <description>Recent content on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Dec 2021 16:36:38 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Dec 2021 22:45:58 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>产品理论分析</title>
+      <link>/posts/design/</link>
+      <pubDate>Thu, 16 Dec 2021 22:45:58 +0800</pubDate>
+      
+      <guid>/posts/design/</guid>
+      <description>背景 随着社会的进步，程序员的业余时间越来越多，这些时间被用来创造价值，整个社会“劳动业余价值”不断增长。业余价值往往发起于个人，当达到一定规模后部分转化为“劳动企业价值“，最终都会转化为”消费价值“。
+业余创造价值是的过程必然和企业创造的过程不同，表现在创造的多样性，周期变短，成本更低，团队更小等&amp;hellip;为微小团体做好服务是我们的核心价值！
+受众 拥有创造力的人群，能够快速创造价值，例如程序员，硬件工程师，小说家, 这些人有个特点，容易接受新事物，容易形成小团体，具有较高文化水平，付费能力强
+创造价值过程服务  积累   我们提供更好的学习方式，沉静式学习，场景式学习，陪伴式学习，我们提供更强的资金支持，帮助你解决资源问题，没有后顾之忧
+  合作   我们提供更靠谱的合伙人，助力筛选人才
+  推广   我们提供流量，不同价值有不同的流量入口，我们提供一系列入口
+  持续   我们提供持续创造的环境，让你越做越大
+ 产品形态 手机端主要是社交为主，寻求合作，价值推广；web端主要是沉静式学习，助力价值的积累
+名词解释  劳动业余价值：劳动力在工作时间之外创造的价值 劳动企业价值：劳动力在企业创造的价值 消费价值：劳动力消费掉的价值  </description>
+    </item>
+    
     <item>
       <title>OS-1 课程计划</title>
       <link>/posts/os/os1/schedule/</link>
