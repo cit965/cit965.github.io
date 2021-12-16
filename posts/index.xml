@@ -6,7 +6,18 @@
     <description>Recent content in Posts on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 Dec 2021 22:45:58 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 17 Dec 2021 00:54:46 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1.two Sum</title>
+      <link>/posts/leetcode/1.two-sum/</link>
+      <pubDate>Fri, 17 Dec 2021 00:54:46 +0800</pubDate>
+      
+      <guid>/posts/leetcode/1.two-sum/</guid>
+      <description>题目 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
+你可以假设每个输入只对应一种答案，且同样的元素不能被重复利用
+讲解  两次循环暴力破解  func twoSum(nums []int, target int) []int { for i:=0;i&amp;lt;len(nums);i++{ for j:=i+1;j&amp;lt;len(nums);j++{ if nums[i]+nums[j] == target { return []int{i,j} } } } return nil } //时间复杂度为o(n^2) 将所有的键存储到一个map中以值为键，在存放前先进行一次计算，假定当前值为x,未知值为y，target-x=y，再从map中尝试获取键为y的值，若能获取到则直接返回x的键及map中y的值  func twoSum(nums []int, target int) []int { maps := map[int]int{} for index, value := range nums { member := target - value if key,ok := maps[member];ok{ return []int{key,index} }else{ maps[value] = index } } return nil } //时间复杂度为o(n) 视频  </description>
+    </item>
+    
     <item>
       <title>产品理论分析</title>
       <link>/posts/design/</link>

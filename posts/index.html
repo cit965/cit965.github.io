@@ -152,6 +152,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>1.two Sum
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>题目 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
+你可以假设每个输入只对应一种答案，且同样的元素不能被重复利用
+讲解  两次循环暴力破解  func twoSum(nums []int, target int) []int { for i:=0;i&lt;len(nums);i&#43;&#43;{ for j:=i&#43;1;j&lt;len(nums);j&#43;&#43;{ if nums[i]&#43;nums[j] == target { return []int{i,j} } } } return nil } //时间复杂度为o(n^2) 将所有的键存储到一个map中以值为键，在存放前先进行一次计算，假定当前值为x,未知值为y，target-x=y，再从map中尝试获取键为y的值，若能获取到则直接返回x的键及map中y的值  func twoSum(nums []int, target int) []int { maps := map[int]int{} for index, value := range nums { member := target - value if key,ok := maps[member];ok{ return []int{key,index} }else{ maps[value] = index } } return nil } //时间复杂度为o(n) 视频  </p>
+  </section>
+  <footer class="entry-footer"><span title='2021-12-17 00:54:46 +0800 +0800'>December 17, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to 1.two Sum" href="/posts/leetcode/1.two-sum/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>产品理论分析
     </h2>
   </header>
