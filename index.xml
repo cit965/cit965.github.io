@@ -22,7 +22,7 @@
     </item>
     
     <item>
-      <title>Lec1</title>
+      <title>操作系统-lec1</title>
       <link>/posts/os/os1/lec1/</link>
       <pubDate>Sat, 18 Dec 2021 11:59:38 +0800</pubDate>
       
@@ -76,7 +76,7 @@ fork fork会创建一个新的进程，下面是使用fork的一个简单用例
     </item>
     
     <item>
-      <title>OS-1 课程计划</title>
+      <title>操作系统课程计划</title>
       <link>/posts/os/os1/schedule/</link>
       <pubDate>Sat, 11 Dec 2021 16:36:38 +0800</pubDate>
       
