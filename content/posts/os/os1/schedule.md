@@ -1,5 +1,5 @@
 ---
-title: "OS-1 课程计划"
+title: "操作系统课程计划"
 date: 2021-12-11T16:36:38+08:00
 draft: false
 categories: os

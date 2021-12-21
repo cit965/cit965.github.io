@@ -1,5 +1,5 @@
 ---
-title: "Lec1"
+title: "操作系统-lec1"
 date: 2021-12-18T11:59:38+08:00
 draft: false
 categories: os
