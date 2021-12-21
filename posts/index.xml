@@ -6,7 +6,21 @@
     <description>Recent content in Posts on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Dec 2021 11:59:38 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Dec 2021 13:20:13 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2.add Two Number</title>
+      <link>/posts/leetcode/2.add-two-number/</link>
+      <pubDate>Tue, 21 Dec 2021 13:20:13 +0800</pubDate>
+      
+      <guid>/posts/leetcode/2.add-two-number/</guid>
+      <description>题目 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+请你将两个数相加，并以相同形式返回一个表示和的链表。
+你可以假设除了数字 0 之外，这两个数都不会以 0 开头
+输入：l1 = [2,4,3], l2 = [5,6,4] 输出：[7,0,8] 解释：342 + 465 = 807.
+思路 这题考查我们对链表的操作，主要是如何初始化链表，需要注意的是需要一个carry来标识是否进位，一个head来标识链表起点
+代码 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode { head := &amp;amp;ListNode{} n1, n2, carry, current := 0, 0, 0, head for l1 != nil || l2 != nil || carry != 0 { if l1 == nil { n1 = 0 } else { n1 = l1.</description>
+    </item>
+    
     <item>
       <title>Lec1</title>
       <link>/posts/os/os1/lec1/</link>
@@ -42,7 +56,7 @@ fork fork会创建一个新的进程，下面是使用fork的一个简单用例
       <guid>/posts/leetcode/1.two-sum/</guid>
       <description>题目 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
 你可以假设每个输入只对应一种答案，且同样的元素不能被重复利用
-讲解  两次循环暴力破解  func twoSum(nums []int, target int) []int { for i:=0;i&amp;lt;len(nums);i++{ for j:=i+1;j&amp;lt;len(nums);j++{ if nums[i]+nums[j] == target { return []int{i,j} } } } return nil } //时间复杂度为o(n^2) 将所有的键存储到一个map中以值为键，在存放前先进行一次计算，假定当前值为x,未知值为y，target-x=y，再从map中尝试获取键为y的值，若能获取到则直接返回x的键及map中y的值  func twoSum(nums []int, target int) []int { maps := map[int]int{} for index, value := range nums { member := target - value if key,ok := maps[member];ok{ return []int{key,index} }else{ maps[value] = index } } return nil } //时间复杂度为o(n) 视频  </description>
+代码  两次循环暴力破解  func twoSum(nums []int, target int) []int { for i:=0;i&amp;lt;len(nums);i++{ for j:=i+1;j&amp;lt;len(nums);j++{ if nums[i]+nums[j] == target { return []int{i,j} } } } return nil } //时间复杂度为o(n^2) 将所有的键存储到一个map中以值为键，在存放前先进行一次计算，假定当前值为x,未知值为y，target-x=y，再从map中尝试获取键为y的值，若能获取到则直接返回x的键及map中y的值  func twoSum(nums []int, target int) []int { maps := map[int]int{} for index, value := range nums { member := target - value if key,ok := maps[member];ok{ return []int{key,index} }else{ maps[value] = index } } return nil } //时间复杂度为o(n) 视频  </description>
     </item>
     
     <item>
