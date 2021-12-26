@@ -2,6 +2,7 @@
 title: "K8s-Lec1.1"
 date: 2021-12-26T19:29:58+08:00
 draft: false
+categories: k8s
 ---
 
 ### 1.1 介绍k8s
