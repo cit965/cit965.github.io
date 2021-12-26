@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Categories | CIT计算机兴趣小组</title>
+<title>k8s | CIT计算机兴趣小组</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="/categories/" />
+<link rel="canonical" href="/categories/k8s/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -19,7 +19,7 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.85.0" />
-<link rel="alternate" type="application/rss+xml" href="/categories/index.xml">
+<link rel="alternate" type="application/rss+xml" href="/categories/k8s/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,13 +56,13 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="Categories" />
+</noscript><meta property="og:title" content="k8s" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="/categories/" />
+<meta property="og:url" content="/categories/k8s/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Categories"/>
+<meta name="twitter:title" content="k8s"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -114,7 +114,7 @@
             </li>
             <li>
                 <a href="/categories/" title="分类">
-                    <span class="active">分类</span>
+                    <span>分类</span>
                 </a>
             </li>
             <li>
@@ -130,22 +130,40 @@
         </ul>
     </nav>
 </header>
-<main class="main">
+<main class="main"> 
 <header class="page-header">
-    <h1>Categories</h1>
+  <h1>k8s</h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="/categories/k8s/">k8s <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="/categories/leetcode/">leetcode <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="/categories/os/">os <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>K8s-Lec1.1
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>1.1 介绍k8s k8s is kubernetes
+kubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶
+在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量
+Kubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的
+抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上
+k8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商
+如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上
+以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间
+开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务
+关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的
+谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务
+除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的
+当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中
+自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序
+然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务
+现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难
+幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难
+整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务
+当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道</p>
+  </section>
+  <footer class="entry-footer"><span title='2021-12-26 19:29:58 +0800 +0800'>December 26, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to K8s-Lec1.1" href="/posts/k8s/lec1.1/"></a>
+</article>
     </main>
     
 <footer class="footer">

@@ -6,7 +6,16 @@
     <description>Recent content in Categories on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Dec 2021 13:20:13 +0800</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Dec 2021 19:29:58 +0800</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>k8s</title>
+      <link>/categories/k8s/</link>
+      <pubDate>Sun, 26 Dec 2021 19:29:58 +0800</pubDate>
+      
+      <guid>/categories/k8s/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>leetcode</title>
       <link>/categories/leetcode/</link>
