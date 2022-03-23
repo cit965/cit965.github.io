@@ -36,4 +36,6 @@ Kubernetes 消除了部署和扩展容器化应用程序所涉及的许多手动
 
 当您使用容器编排工具(如 Kubernetes)时，您将使用 YAML 或 JSON 文件描述应用程序的配置。配置文件告诉组态管理工具在哪里可以找到容器映像，如何建立网络，以及在哪里存储日志 
 
-您可以使用 Kubernetes 模式来管理基于容器的应用程序和服务的配置、生命周期和规模。这些可重复的模式是 Kubernetes 开发人员构建完整系统所需的工具
+您可以使用 Kubernetes 模式来管理基于容器的应用程序和服务的配置、生命周期和规模。这些可重复的模式是 Kubernetes 开发人员构建完整系统所需的工具 
+
+使用k8s https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/
