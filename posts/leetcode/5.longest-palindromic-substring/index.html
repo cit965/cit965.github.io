@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>5.longest Palindromic Substring | CIT计算机兴趣小组</title>
+<meta name="keywords" content="" />
+<meta name="description" content="题目 给你一个字符串 s，找到 s 中最长的回文子串。
+输入：s = &ldquo;babad&rdquo;
+输出：&ldquo;bab&rdquo;
+解释：&ldquo;aba&rdquo; 同样是符合题意的答案。
+题解 func longestPalindrome(s string) string { res, dp := &#34;&#34;, make([][]bool, len(s)) for i := 0; i &lt; len(s); i&#43;&#43; { dp[i] = make([]bool, len(s)) } for i := len(s) - 1; i &gt;= 0; i-- { for j := i; j &lt; len(s); j&#43;&#43; { dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i&#43;1][j-1]) if dp[i][j] &amp;&amp; (res == &#34;&#34; || j-i&#43;1 &gt; len(res)) { res = s[i : j&#43;1] } } } return res } 解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。所以状态转移方程是 dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i&#43;1][j-1])，注意特殊的情况，j - i == 1 的时候，即只有 2 个字符的情况，只需要判断这 2 个字符是否相同即可。j - i == 2 的时候，即只有 3 个字符的情况，只需要判断除去中心以外对称的 2 个字符是否相等。每次循环动态维护保存最长回文串即可。时间复杂度 O(n^2)，空间复杂度 O(n^2)">
+<meta name="author" content="">
+<link rel="canonical" href="/posts/leetcode/5.longest-palindromic-substring/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.85.0" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="5.longest Palindromic Substring" />
+<meta property="og:description" content="题目 给你一个字符串 s，找到 s 中最长的回文子串。
+输入：s = &ldquo;babad&rdquo;
+输出：&ldquo;bab&rdquo;
+解释：&ldquo;aba&rdquo; 同样是符合题意的答案。
+题解 func longestPalindrome(s string) string { res, dp := &#34;&#34;, make([][]bool, len(s)) for i := 0; i &lt; len(s); i&#43;&#43; { dp[i] = make([]bool, len(s)) } for i := len(s) - 1; i &gt;= 0; i-- { for j := i; j &lt; len(s); j&#43;&#43; { dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i&#43;1][j-1]) if dp[i][j] &amp;&amp; (res == &#34;&#34; || j-i&#43;1 &gt; len(res)) { res = s[i : j&#43;1] } } } return res } 解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。所以状态转移方程是 dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i&#43;1][j-1])，注意特殊的情况，j - i == 1 的时候，即只有 2 个字符的情况，只需要判断这 2 个字符是否相同即可。j - i == 2 的时候，即只有 3 个字符的情况，只需要判断除去中心以外对称的 2 个字符是否相等。每次循环动态维护保存最长回文串即可。时间复杂度 O(n^2)，空间复杂度 O(n^2)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/leetcode/5.longest-palindromic-substring/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-01-16T18:17:06&#43;08:00" />
+<meta property="article:modified_time" content="2022-01-16T18:17:06&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="5.longest Palindromic Substring"/>
+<meta name="twitter:description" content="题目 给你一个字符串 s，找到 s 中最长的回文子串。
+输入：s = &ldquo;babad&rdquo;
+输出：&ldquo;bab&rdquo;
+解释：&ldquo;aba&rdquo; 同样是符合题意的答案。
+题解 func longestPalindrome(s string) string { res, dp := &#34;&#34;, make([][]bool, len(s)) for i := 0; i &lt; len(s); i&#43;&#43; { dp[i] = make([]bool, len(s)) } for i := len(s) - 1; i &gt;= 0; i-- { for j := i; j &lt; len(s); j&#43;&#43; { dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i&#43;1][j-1]) if dp[i][j] &amp;&amp; (res == &#34;&#34; || j-i&#43;1 &gt; len(res)) { res = s[i : j&#43;1] } } } return res } 解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。所以状态转移方程是 dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i&#43;1][j-1])，注意特殊的情况，j - i == 1 的时候，即只有 2 个字符的情况，只需要判断这 2 个字符是否相同即可。j - i == 2 的时候，即只有 3 个字符的情况，只需要判断除去中心以外对称的 2 个字符是否相等。每次循环动态维护保存最长回文串即可。时间复杂度 O(n^2)，空间复杂度 O(n^2)"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/posts/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "5.longest Palindromic Substring",
+      "item": "/posts/leetcode/5.longest-palindromic-substring/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "5.longest Palindromic Substring",
+  "name": "5.longest Palindromic Substring",
+  "description": "题目 给你一个字符串 s，找到 s 中最长的回文子串。\n输入：s = \u0026ldquo;babad\u0026rdquo;\n输出：\u0026ldquo;bab\u0026rdquo;\n解释：\u0026ldquo;aba\u0026rdquo; 同样是符合题意的答案。\n题解 func longestPalindrome(s string) string { res, dp := \u0026#34;\u0026#34;, make([][]bool, len(s)) for i := 0; i \u0026lt; len(s); i++ { dp[i] = make([]bool, len(s)) } for i := len(s) - 1; i \u0026gt;= 0; i-- { for j := i; j \u0026lt; len(s); j++ { dp[i][j] = (s[i] == s[j]) \u0026amp;\u0026amp; ((j-i \u0026lt; 3) || dp[i+1][j-1]) if dp[i][j] \u0026amp;\u0026amp; (res == \u0026#34;\u0026#34; || j-i+1 \u0026gt; len(res)) { res = s[i : j+1] } } } return res } 解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。所以状态转移方程是 dp[i][j] = (s[i] == s[j]) \u0026amp;\u0026amp; ((j-i \u0026lt; 3) || dp[i+1][j-1])，注意特殊的情况，j - i == 1 的时候，即只有 2 个字符的情况，只需要判断这 2 个字符是否相同即可。j - i == 2 的时候，即只有 3 个字符的情况，只需要判断除去中心以外对称的 2 个字符是否相等。每次循环动态维护保存最长回文串即可。时间复杂度 O(n^2)，空间复杂度 O(n^2)",
+  "keywords": [
+    
+  ],
+  "articleBody": "题目 给你一个字符串 s，找到 s 中最长的回文子串。\n输入：s = “babad”\n输出：“bab”\n解释：“aba” 同样是符合题意的答案。\n题解 func longestPalindrome(s string) string { res, dp := \"\", make([][]bool, len(s)) for i := 0; i s); i++ { dp[i] = make([]bool, len(s)) } for i := len(s) - 1; i = 0; i-- { for j := i; j s); j++ { dp[i][j] = (s[i] == s[j]) \u0026\u0026 ((j-i 3) || dp[i+1][j-1]) if dp[i][j] \u0026\u0026 (res == \"\" || j-i+1  len(res)) { res = s[i : j+1] } } } return res } 解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。所以状态转移方程是 dp[i][j] = (s[i] == s[j]) \u0026\u0026 ((j-i ",
+  "wordCount" : "128",
+  "inLanguage": "en",
+  "datePublished": "2022-01-16T18:17:06+08:00",
+  "dateModified": "2022-01-16T18:17:06+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/posts/leetcode/5.longest-palindromic-substring/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "CIT计算机兴趣小组",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="CIT计算机兴趣小组 (Alt + H)">CIT计算机兴趣小组</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/courses" title="课程">
+                    <span>课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/timeline/" title="历程">
+                    <span>历程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/maintainers" title="讲师">
+                    <span>讲师</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      5.longest Palindromic Substring
+    </h1>
+    <div class="post-meta"><span title='2022-01-16 18:17:06 +0800 +0800'>January 16, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h3 id="题目">题目<a hidden class="anchor" aria-hidden="true" href="#题目">#</a></h3>
+<p>给你一个字符串 s，找到 s 中最长的回文子串。<br>
+输入：s = &ldquo;babad&rdquo;<br>
+输出：&ldquo;bab&rdquo;<br>
+解释：&ldquo;aba&rdquo; 同样是符合题意的答案。</p>
+<h3 id="题解">题解<a hidden class="anchor" aria-hidden="true" href="#题解">#</a></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">longestPalindrome</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">dp</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>, make([][]<span style="color:#66d9ef">bool</span>, len(<span style="color:#a6e22e">s</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">s</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">dp</span>[<span style="color:#a6e22e">i</span>] = make([]<span style="color:#66d9ef">bool</span>, len(<span style="color:#a6e22e">s</span>))
+	}
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">s</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">--</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">i</span>; <span style="color:#a6e22e">j</span> &lt; len(<span style="color:#a6e22e">s</span>); <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">dp</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] = (<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">==</span> <span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">j</span>]) <span style="color:#f92672">&amp;&amp;</span> ((<span style="color:#a6e22e">j</span><span style="color:#f92672">-</span><span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">3</span>) <span style="color:#f92672">||</span> <span style="color:#a6e22e">dp</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>][<span style="color:#a6e22e">j</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">dp</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">&amp;&amp;</span> (<span style="color:#a6e22e">res</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">j</span><span style="color:#f92672">-</span><span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> &gt; len(<span style="color:#a6e22e">res</span>)) {
+				<span style="color:#a6e22e">res</span> = <span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">i</span> : <span style="color:#a6e22e">j</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
+			}
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>
+}
+</code></pre></div><p>解法一，动态规划。定义 dp[i][j] 表示从字符串第 i 个字符到第 j 个字符这一段子串是否是回文串。由回文串的性质可以得知，回文串去掉一头一尾相同的字符以后，剩下的还是回文串。所以状态转移方程是 dp[i][j] = (s[i] == s[j]) &amp;&amp; ((j-i &lt; 3) || dp[i+1][j-1])，注意特殊的情况，j - i == 1 的时候，即只有 2 个字符的情况，只需要判断这 2 个字符是否相同即可。j - i == 2 的时候，即只有 3 个字符的情况，只需要判断除去中心以外对称的 2 个字符是否相等。每次循环动态维护保存最长回文串即可。时间复杂度 O(n^2)，空间复杂度 O(n^2)</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="next" href="/posts/leetcode/4.median-of-two-sorted-arrays/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>4.median of Two Sorted Arrays</span>
+  </a>
+</nav>
+
+  </footer><script src="https://utteranc.es/client.js"
+        repo="cit965/blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="/">CIT计算机兴趣小组</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
