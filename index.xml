@@ -6,7 +6,33 @@
     <description>Recent content on CIT计算机兴趣小组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Mar 2022 20:31:47 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 07 Apr 2022 21:03:53 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8s-Lec2.1</title>
+      <link>/posts/k8s/lec3.1/</link>
+      <pubDate>Thu, 07 Apr 2022 21:03:53 +0800</pubDate>
+      
+      <guid>/posts/k8s/lec3.1/</guid>
+      <description>k8s 源码简介 咱们从k8s first commit 开始讲起
+代码模块  apiserver cloudcfg controller-manager kubelet proxy cluster(sh)  apiserver 定义了3+1个RestStorage： tasks,replicationControllers,services , endpointController 。负责接收用户发出的crud，底层依赖了etcd
+cloudcfg kubectl 的前身，负责解析命令行参数，和apiserver交互
+controller-manager 通过list和watch以及label selector 来控制tasks的副本数量
+kubelet 用来创建task，查询task，删除task
+proxy 主要用来实现servers和endpoint的流量转发
+cluster（sh） 负责虚拟机的网络初始化，k8s集群的安装卸载，第一版主要是gcloud</description>
+    </item>
+    
+    <item>
+      <title>Policy</title>
+      <link>/posts/policy/</link>
+      <pubDate>Wed, 23 Mar 2022 21:56:31 +0800</pubDate>
+      
+      <guid>/posts/policy/</guid>
+      <description>Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解 引言 随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。 背景介绍 OPA 开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略
+ 图片来自 OPA 官方  权限模型 RBAC 基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。
+如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性 ABAC 基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。</description>
+    </item>
+    
     <item>
       <title>K8s-Lec2.1</title>
       <link>/posts/k8s/lec2.1/</link>

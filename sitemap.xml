@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2022-03-23T20:31:47+08:00</lastmod>
-  </url><url>
     <loc>/</loc>
+    <lastmod>2022-04-07T21:03:53+08:00</lastmod>
+  </url><url>
+    <loc>/posts/k8s/lec3.1/</loc>
+    <lastmod>2022-04-07T21:03:53+08:00</lastmod>
+  </url><url>
+    <loc>/posts/</loc>
+    <lastmod>2022-04-07T21:03:53+08:00</lastmod>
+  </url><url>
+    <loc>/posts/policy/</loc>
+    <lastmod>2022-03-23T21:56:31+08:00</lastmod>
+  </url><url>
+    <loc>/categories/</loc>
     <lastmod>2022-03-23T20:31:47+08:00</lastmod>
   </url><url>
     <loc>/categories/k8s/</loc>
     <lastmod>2022-03-23T20:31:47+08:00</lastmod>
   </url><url>
     <loc>/posts/k8s/lec2.1/</loc>
-    <lastmod>2022-03-23T20:31:47+08:00</lastmod>
-  </url><url>
-    <loc>/posts/</loc>
     <lastmod>2022-03-23T20:31:47+08:00</lastmod>
   </url><url>
     <loc>/posts/leetcode/5.longest-palindromic-substring/</loc>

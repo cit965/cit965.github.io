@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Policy | CIT计算机兴趣小组</title>
+<meta name="keywords" content="" />
+<meta name="description" content="Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解 引言 随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。 背景介绍 OPA 开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略
+ 图片来自 OPA 官方  权限模型 RBAC 基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。
+如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性 ABAC 基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。">
+<meta name="author" content="">
+<link rel="canonical" href="/posts/policy/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.85.0" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Policy" />
+<meta property="og:description" content="Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解 引言 随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。 背景介绍 OPA 开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略
+ 图片来自 OPA 官方  权限模型 RBAC 基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。
+如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性 ABAC 基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/policy/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-23T21:56:31&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-23T21:56:31&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Policy"/>
+<meta name="twitter:description" content="Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解 引言 随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。 背景介绍 OPA 开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略
+ 图片来自 OPA 官方  权限模型 RBAC 基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。
+如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性 ABAC 基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/posts/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Policy",
+      "item": "/posts/policy/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Policy",
+  "name": "Policy",
+  "description": "Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解 引言 随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。 背景介绍 OPA 开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略\n 图片来自 OPA 官方  权限模型 RBAC 基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。\n如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性 ABAC 基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。",
+  "keywords": [
+    
+  ],
+  "articleBody": "Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解 引言 随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。 背景介绍 OPA 开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略\n 图片来自 OPA 官方  权限模型 RBAC 基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。\n如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性 ABAC 基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。\n 图片来自阿里云帮助文档  Zadig 权限场景\n 系统级别角色-解决全系统级别的权限问题(RBAC)  管理员:拥有全系统的所有权限 普通用户:拥有公开项目以及其所有资源的查看权限、测试管理和数据分析的查看权限   项目级别角色-解决项目级别的权限问题(RBAC)  project-admin:拥有该项目下的所有权限 read-only:拥有该项目下的所有资源的查看权限 read-project-only(默认):拥有该项目下工作流和集成环境list的权限(但资源会被精细化管理)，服务、构建和测试资源的所有查看权限 自定义角色:自定义每个模块权限能力   项目级别策略:解决项目级别资源的精细化管理(ABAC) 因此 zadig 基于 OPA 实现 RBAC 解决了系统和项目通用的权限管理，实现 ABAC 解决了项目级别资源的精细化管理 Zadig 权限架构设计 权限架构图:  gloo 作为 Zadig 的网关，是 zadig 所有流量的入口。通过集成 OPA 后，所有经过网关的流量都会由OPA来统一进行认证鉴权，而只有认证鉴权通过后才会准许访问后端服务(aslan)。并且OPA决策依赖的数据会异步定时去权限管理服务(policy)和后端服务(aslan)采集决策所需要的权限和资源数据，从而实现高性能决策。 Zadig 权限数据库模型 zadig-policy 数据库中的相关数据模型 role 用户角色定义表，用来定义某项目下角色，下面的一条记录表示在项目「zadig」下有一个「dev」角色，该角色拥有查看工作流和执行工作流的权限 { “name” : “dev”, // 对应zadig中的项目名 “namespace” : “zadig”, // rule为权限最小单位，下面的代表用户对工作流有查看和执行权限 “rules” : [ { “verbs” : [ “get_workflow”, //业务语义权限，实际权限规则见policy_meta表 “run_workflow” ], “resources” : [ “Workflow” ] } ], }\nrolebinding 用户角色绑定表，用来将角色绑定到用户身上，下面的一条记录表示将「zadig」项目下的「dev」角色绑定给uid为「71b8aa87-a10b-11ec-af4e-fa012450189e」的用户 { “name” : “71b8aa87-a10b-11ec-af4e-fa012450189e-zadig-dev”, “namespace” : “dev”, “subjects” : [ { “kind” : “user”, “uid” : “71b8aa87-a10b-11ec-af4e-fa012450189e” } ], // 用户绑定的角色 “role_ref” : { “name” : “dev”, “namespace” : “zadig” } }\npolicy_meta 权限元信息表，用来将业务语意的权限转换为对应 【endpoint+action】，在提供给OPA的bundle数据里角色下面的权限会被转换成一组url的集合，具体转换后的内容可以看决策数据中的Role { “resource” : “Workflow”, “alias” : “工作流”, “rules” : [ { “action” : “run_workflow”,//对应role中的verbs “alias” : “执行”, “rules” : [ { “method” : “POST”, “endpoint” : “/api/aslan/workflow/workflowtask” }, { “method” : “PUT”, “endpoint” : “/api/aslan/workflow/workflowtask” } … ] }, { “action” : “get_workflow”, “alias” : “查看”, “description” : “”, “rules” : [ { “method” : “GET”, “endpoint” : “api/aslan/workflow/workflow” }, { “method” : “GET”, “endpoint” : “/api/aslan/workflow/workflow/find/?*” }, … ] } ] }\npolicy 用户策略定义表，用来定义某项目下策略，下面的一条记录表示在项目「zadig」下有一个「zadig-dev-system-zhangsan」策略 policy和role表基本一致，主要区别是policy表多了一个match_attributes字段，这里表示对于项目「zadig」下打上label为【key= policy，value= zadig-dev-system-zhangsan-Workflow-zadig-workflow-dev】的workflow有拥有查看工作流和执行工作流的权限 { “name” : “zadig-dev-system-zhangsan”, “namespace” : “zadig”, “description” : “zadig dev zhangsan 的权限”, “rules” : [ { “verbs” : [ “get_workflow”, “run_workflow” ], “resources” : [ “Workflow” ], “kind” : “resource”, “match_attributes” : [ //标签，来自于label表中，用以筛选相匹配标签的资源 { “key” : “policy”, “value” : “zadig-dev-system-zhangsan-Workflow-zadig-workflow-dev” } ] } }\npolicybinding 用户策略绑定表，用来将策略绑定到用户身上，下面的一条记录表示将「zadig」项目下的「zadig-dev-system-zhangsan」策略绑定给uid为「4fd92962-a4f6-11ec-af4e-fa012450189e」的用户 { “name” : “4fd92962-a4f6-11ec-af4e-fa012450189e-mouuii-15-z201-system-z201-mouuii-15”, “namespace” : “zadig”, //项目名 “subjects” : [ { “kind” : “user”, “uid” : “4fd92962-a4f6-11ec-af4e-fa012450189e” } ], “policy_ref” : { “name” : “zadig-dev-system-zhangsan”, //策略名 “namespace” : “zadig” //项目名 } }\nzadig 数据库中的相关数据模型 label 标签表，标签会同时打在权限rule规则和资源上，即表示权限对此标签的资源有相关权限 { “type” : “system”, “key” : “policy”, “value” : “zadig-dev-system-zhangsan-Environment-qa”, “project_name” : “zadig” }\nlabelbinding 标签资源关联表，记录标签和资源的绑定关系 { “resource_type” : “Workflow”, “resource_name” : “zadig-workflow-dev”, “project_name” : “zadig”, “label_id” : “62318aa4fc41757efdefc20a”, }\nRBAC 的实现 决策数据 决策数据指的是提供给OPA用来执行决策的元数据集，它包括权限数据和资源数据，主要来自于权限管理服务(policy)和后端服务(aslan)，在OPA术语中叫做bundle，OPA会将bundle缓存，提高决策效率，以下为决策数据目录结构\nroles 角色数据，数据来自上述role和policy_meta表，采集时会将其拼装，因此此处的rules是最终拼装的结果\n{ “roles”: [ { “name”: “dev”, “namespace”: “zadig”, “rules”: [ { “method”: “GET”, “endpoint”: “/api/aslan/environment/environments” }, { “method”: “GET”, “endpoint”: “/api/aslan/logs/log/workflow/?/tasks/?/service/?” }, { “method”: “GET”, “endpoint”: “/api/aslan/logs/log/workflow/?/tasks/?/tests/test/service/?” }, { “method”: “GET”, “endpoint”: “/api/aslan/logs/log/workflow/?/tasks/?/tests/test/service/?” }, { “method”: “GET”, “endpoint”: “/api/aslan/logs/sse/workflow/build/?/?/?/?” }, { “method”: “GET”, “endpoint”: “/api/aslan/logs/sse/workflow/test/?/?/?/?/?” }, { “method”: “GET”, “endpoint”: “/api/aslan/project/products/?*/services” } … ] } ] }\nbindings: role_bindings 角色绑定数据，数据主要来自于上述 rolebinding 表 “role_bindings”:[ { “uid”: “71b8aa87-a10b-11ec-af4e-fa012450189e”, “bindings”: [ { “namespace”: “zadig”, “role_refs”: [ { “name”: “dev”, “namespace”: “zadig” } ] } ] } ]\nresources 资源数据，zadig目前提供项目下细粒度资源的权限控制，所以需要采集工作流和环境相关资源\n Workflow:工作流采集数据，原始数据存储在后端服务(aslan) Environment：采集数据，原始数据存储在后端服务(aslan) { “Workflow”:[ { “resourceID”: “zadig-ops-workflow”, “projectName”: “zadig”, “spec”: {} }, { “resourceID”: “zadig-workflow-dev”, “projectName”: “zadig”, “spec”: {} }, { “resourceID”: “cvm-andrew-ops-workflow”, “projectName”: “cvm-andrew”, “spec”: {} } … ], “Environment”:[ { “resourceID”: “zadig-ops-workflow”, “projectName”: “zadig”, “spec”: {} }, { “resourceID”: “zadig-workflow-dev”, “projectName”: “zadig”, “spec”: {} }, { “resourceID”: “cvm-andrew-ops-workflow”, “projectName”: “cvm-andrew”, “spec”: {} } … ] }  exemptions 特殊url采集\n Public zadig公开的urls，所有用户(包括未登陆用户都能访问) Privileged zaidg特权urls，只有系统admin用户能访问 Registered zadig所有注册的urls，没有注册的urls默认登陆用户就能访问 “public”: [ { “method”: “GET”, “endpoint”: \"\" }, { “method”: “GET”, “endpoint”: “api/aslan/cluster/agent/?*/agent.yaml” }, { “method”: “GET”, “endpoint”: “api/aslan/health” } … ]  “privileged”: [ { “method”: “POST”, “endpoint”: “api/aslan/cluster/clusters” }, { “method”: “DELETE”, “endpoint”: “api/aslan/cluster/clusters/?” }, { “method”: “PUT”, “endpoint”: “api/aslan/cluster/clusters/?” } … ]\n“registered”: [ { “method”: “DELETE”, “endpoint”: “/api/aslan/build/build” }, { “method”: “GET”, “endpoint”: “/api/aslan/build/build” } … ]\nOPA 实现 鉴权流程\n 校验url是否无注册，如果是无注册，则返回通过 用户是否是admin，如果是，则返回通过 请求是否满足，url不是特权url，并且用户为该项目的项目管理员,如果是则返回通过 请求是否满足，url不是特权url，并且请求匹配该用户绑定的角色的权限，如果是则返回通过(权限不带标签，即rule中不带有matchAttributes) 关键代码(rego) // 鉴权结果 response = r { allow roles := all_roles r := { “allowed”: true, } }  allow { … access_is_granted }\n// 查询用户匹配的角色 rules ，将查询出的结果匹配http request access_is_granted { not url_is_privileged //校验url 是否不是特权url\nsome rule allowed_role_plain_rules[rule] rule.method == http_request.method glob.match(trim(rule.endpoint, \"/\"), [\"/\"], concat(\"/\", input.parsed_path))  }\n// url 是特权url url_is_privileged { some i data.exemptions.privileged[i].method == http_request.method glob.match(trim(data.exemptions.privileged[i].endpoint, “/\"), [\"/\"], concat(\"/”, input.parsed_path)) }\n// 获取用户匹配的不带标签的角色 rules allowed_role_plain_rules[rule] { rule := allowed_role_rules[_] not rule.matchAttributes not rule.matchExpressions }\n// 获取请求项目下匹配的角色的rules allowed_role_rules[rule] { some role_ref allowed_roles[role_ref]\nsome i data.roles.roles[i].name == role_ref.name data.roles.roles[i].namespace == role_ref.namespace rule := data.roles.roles[i].rules[_]  }\n// 获取用户请求项目下匹配的角色 allowed_roles[role_ref] { some i some j data.bindings.role_bindings[i].uid == claims.uid data.bindings.role_bindings[i].bindings[j].namespace == project_name role_ref := data.bindings.role_bindings[i].bindings[j].role_refs[_] }\nABAC 的实现 决策数据 决策数据解释同RBAC决策数据 bindings : policy_bindings 策略绑定数据，数据来自上述policybinding表\n“policy_bindings”: [ { “uid”: “4fd92962-a4f6-11ec-af4e-fa012450189e”, “bindings”: [ { “namespace”: “zadig”, “policy_refs”: [ { “name”: “read-project-only”, “namespace”: \"\" }, { “name”: “zadig-dev-system-zhangsan”, “namespace”: “zadig” } ] } ] }, … ]\npolicies 策略数据，数据来自上述policy表,相比较于roles，他的rule的matchAttributes中会带有标签，会对相匹配的资源进行过滤 { “policies”: [ { “name”: “zadig-dev-system-zhangsan”, “namespace”: “zadig”, “rules”: [ { “method”: “GET”, “endpoint”: “/api/aslan/environment/configmaps”, “matchAttributes”: [//标签，用以筛选资源 { “key”: “policy”, “value”: “zadig-dev-system-zhangsan-Environment-dev” } ] }, { “method”: “POST”, “endpoint”: “/api/aslan/environment/image/deployment”, “matchAttributes”: [ { “key”: “policy”, “value”: “zadig-dev-system-zhangsan-Environment-dev” }, { “key”: “policy”, “value”: “zadig-dev-system-zhangsan-Environment-qa” } ] }, … ] } ] }\nresources 相比于 rbac 的 resource 采集，这里的资源 spec 中会带上 label，用来做细粒度资源匹配 { “Workflow”:[ { “resourceID”: “zadig-ops-workflow”, “projectName”: “zadig”, “spec”: { “policy”:“zadig-dev-system-zhangsan-Workflow-dev” } }, { “resourceID”: “mouuii-12”, “projectName”: “mouuii-12”, “spec”: { “policy”:“Zadig-dev-system-zhangsan-Workflow-dev” } } … ], “Environment”:[ { “resourceID”: “zadig-ops-workflow”, “projectName”: “zadig”, “spec”: { “policy”:“zadig-dev-system-zhangsan-Workflow-dev” } }, { “resourceID”: “mouuii-12”, “projectName”: “mouuii-12”, “spec”: { “policy”:“Zadig-dev-system-zhangsan-Workflow-dev” } } … ], }\nOPA 实现 鉴权流程\n 单个资源请求匹配，请求是否满足url不是特权url，该用户绑定的策略权限规则匹配该请求，并且该权限的标签匹配用户请求资源的标签，如果是则返回通过(权限带标签，即rule中带matchAttributes) 如果上述都不满足，会进行多资源请求匹配，该用户绑定的策略权限规则匹配该请求，如果是则会对匹配的资源进行过滤(权限带标签，即rule中带matchAttributes) 如果所有都不满足，则返回鉴权失败 关键代码(rego) // ######################### 单个资源请求匹配 ######################### // 判断当前用户是否对单个资源请求有相关权限 即用户对如 url：api/workflow/:id action：get 是否有权限 // 主要是通过allow中的access_is_granted列表进行判断 response = r { allow r := { “allowed”: true, } }  allow { access_is_granted }\n// 单资源请求是否通过授权 // 1.查询用户拥有的带标签 的 rule // 2.获取请求的资源id // 3.将请求的资源id和匹配的权限rule标签筛选的资源进行匹配 access_is_granted { not url_is_privileged //校验url 是否不是特权url some rule\nallowed_policy_attributive_rules[rule] rule.method == http_request.method glob.match(trim(rule.endpoint, \"/\"), [\"/\"], concat(\"/\", input.parsed_path)) any_attributes_match(rule.matchAttributes, rule.resourceType, get_resource_id(rule.idRegex))  }\n// 该资源是否匹配到某rule的标签所筛选出来的资源 any_attributes_match(attributes, resourceType, resourceID) { res := data.resources[resourceType][_] res.resourceID == resourceID project_name_is_match(res)\nattributes_match(attributes, res)  }\n// rule的matchAttribute为空的时候，不需要匹配 attributes_match(attributes, res) { count(attributes) == 0 }\n// 任何标签匹配 attributes_match(attributes, res) { attribute := attributes[_] attribute_match(attribute, res) }\n// 单个标签匹配 attribute_match(attribute, res) { res.spec[attribute.key] == attribute.value }\n// ################################### filter资源匹配 ###################### // 多资源请求，即用户对如 url：api/workflow action：get 是否有权限，并对结果进行过滤 // rule_is_matched_for_filtering会进行判断是否有匹配的多资源请求权限，通过后会过滤匹配的资源列表，会走user_policy_alowed_resource逻辑，筛选该用户策略所绑定的资源 // zadig会在response header中设置有权限的resource数组 response = r { not allow rule_is_matched_for_filtering resource := user_policy_allowed_resources r := { “allowed”: true, “headers”: { “Resources”: json.marshal(resource), } } }\n// 该用户是否有相匹配的带标签的角色rule rule_is_matched_for_filtering { count(user_matched_role_rule_for_filtering)  0 } // 该用户是否有相匹配的带标签的策略rule rule_is_matched_for_filtering { count(user_matched_policy_rule_for_filtering)  0 }\n// 获取与多资源请求相匹配该用户绑定的策略的带标签的rule列表 user_matched_policy_rule_for_filtering[rule] { some rule\nallowed_policy_attributive_rules[rule] rule.method == http_request.method glob.match(trim(rule.endpoint, \"/\"), [\"/\"], concat(\"/\", input.parsed_path)) not rule.idRegex  } // 获取与多资源请求相匹配该用户绑定的角色的带标签的rule列表 user_matched_role_rule_for_filtering[rule] { some rule\nallowed_role_attributive_rules[rule] rule.method == http_request.method glob.match(trim(rule.endpoint, \"/\"), [\"/\"], concat(\"/\", input.parsed_path)) not rule.idRegex  }\n// 用户策略能够匹配的资源列表 user_policy_allowed_resources[resourceID] { some rule\nuser_matched_policy_rule_for_filtering[rule] res := data.resources[rule.resourceType][_] project_name_is_match(res) attributes_match(rule.matchAttributes, res) resourceID := res.resourceID  }\n// 用户匹配到符合当前request url 的rule user_matched_policy_rule_for_filtering[rule] { some rule\nallowed_policy_attributive_rules[rule] rule.method == http_request.method glob.match(trim(rule.endpoint, \"/\"), [\"/\"], concat(\"/\", input.parsed_path)) not rule.idRegex  }\n// 用户某项目下匹配的带attribute 的 策略 rules allowed_policy_attributive_rules[rule] { rule := allowed_policy_rules[_] rule.matchAttributes }\n// 用户某项目下匹配的策略 rules allowed_policy_rules[rule] { some policy_ref allowed_policies[policy_ref]\nsome i data.policies.policies[i].name == policy_ref.name data.policies.policies[i].namespace == policy_ref.namespace rule := data.policies.policies[i].rules[_]  }\n// 当前用户某项目下匹配的策略 allowed_policies[policy_ref] { some i some j data.bindings.policy_bindings[i].uid == claims.uid data.bindings.policy_bindings[i].bindings[j].namespace == project_name policy_ref := data.bindings.policy_bindings[i].bindings[j].policy_refs[_] }\n",
+  "wordCount" : "1139",
+  "inLanguage": "en",
+  "datePublished": "2022-03-23T21:56:31+08:00",
+  "dateModified": "2022-03-23T21:56:31+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/posts/policy/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "CIT计算机兴趣小组",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="CIT计算机兴趣小组 (Alt + H)">CIT计算机兴趣小组</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/courses" title="课程">
+                    <span>课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/timeline/" title="历程">
+                    <span>历程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/maintainers" title="讲师">
+                    <span>讲师</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Policy
+    </h1>
+    <div class="post-meta"><span title='2022-03-23 21:56:31 +0800 +0800'>March 23, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Zadig 基于 OPA 实现 RBAC 和 ABAC 权限管理技术方案详解
+引言
+随着 Zadig 被越来越多企业用户和社区小伙伴采用，大家对企业级权限和安全性有更高的诉求，亟待一套权限管理方案。经过充分调研，我们最终确定了采用 OPA（开放策略代理）开源策略引擎，事实上，它已经被 Netflix，Pinterest 和 Goldman Sachs 等公司用于生产，正在成为云原生策略管理的事实标准。但 OPA 的编写具有一定的复杂度，网上的教程和官方文档也仅仅停留在 demo 层面。经过 Zadig 从 v1.9.0 到 v1.10.0 的迭代，我们已完整实现了 RBAC 和 ABAC 权限管理业务和技术方案的落地，这里我们将整套方案的技术细节分享给大家。
+背景介绍
+OPA
+开放策略代理(Open Policy Agent，发音为“ oh-pa”)是一个开放源码的通用策略引擎，它统一了跨技术栈的策略实施。OPA 提供了一种高级声明性语言 rego，允许您将策略指定为代码和简单的 api，以加载软件中的策略决策。您可以使用 OPA 在 microservices、 Kubernetes、 CI/CD 管道、 API 网关等中强制执行策略</p>
+<pre><code>                                        图片来自 OPA 官方
+</code></pre>
+<p>权限模型
+RBAC
+基于角色的访问控制模型(RBAC: Role-based Access Control)，顾名思义，给用户定义角色，通过角色来控制权限。目前来说基于角色的访问控制模型是应用较广的一个，特别是 2B 方向 SAAS 领域，应用尤其常见。</p>
+<p>如上图示，用户拥有角色，且可拥有多个角色，而每个角色对应不同权限。这样的好处是：不必为每一个用户去配置权限，拥有极大的灵活性和便利性
+ABAC
+基于属性的访问控制模型(ABAC: Attribute-Based Access Control)，被一些人称为是权限系统设计的未来，不同于常见的将用户通过某种方式关联到权限的方式，ABAC 则是通过动态计算一个或一组属性是否满足某种条件来进行授权判断（可以编写简单的逻辑）。属性通常来说分为四类：用户属性（如用户年龄），环境属性（如当前时间），操作属性（如读取）和对象属性（如一篇文章，又称资源属性），所以理论上能够实现非常灵活的权限控制，几乎能满足所有类型的需求。Zadig 目前主要是通过标签模拟属性来实现细粒度资源权限控制。</p>
+<pre><code>             图片来自阿里云帮助文档
+</code></pre>
+<p>Zadig 权限场景</p>
+<ul>
+<li>系统级别角色-解决全系统级别的权限问题(RBAC)
+<ul>
+<li>管理员:拥有全系统的所有权限</li>
+<li>普通用户:拥有公开项目以及其所有资源的查看权限、测试管理和数据分析的查看权限</li>
+</ul>
+</li>
+<li>项目级别角色-解决项目级别的权限问题(RBAC)
+<ul>
+<li>project-admin:拥有该项目下的所有权限</li>
+<li>read-only:拥有该项目下的所有资源的查看权限</li>
+<li>read-project-only(默认):拥有该项目下工作流和集成环境list的权限(但资源会被精细化管理)，服务、构建和测试资源的所有查看权限</li>
+<li>自定义角色:自定义每个模块权限能力</li>
+</ul>
+</li>
+<li>项目级别策略:解决项目级别资源的精细化管理(ABAC)
+因此 zadig 基于 OPA 实现 RBAC 解决了系统和项目通用的权限管理，实现 ABAC 解决了项目级别资源的精细化管理
+Zadig 权限架构设计
+权限架构图:</li>
+</ul>
+<p>gloo 作为 Zadig 的网关，是 zadig 所有流量的入口。通过集成 OPA 后，所有经过网关的流量都会由OPA来统一进行认证鉴权，而只有认证鉴权通过后才会准许访问后端服务(aslan)。并且OPA决策依赖的数据会异步定时去权限管理服务(policy)和后端服务(aslan)采集决策所需要的权限和资源数据，从而实现高性能决策。
+Zadig 权限数据库模型
+zadig-policy 数据库中的相关数据模型
+role
+用户角色定义表，用来定义某项目下角色，下面的一条记录表示在项目「zadig」下有一个「dev」角色，该角色拥有查看工作流和执行工作流的权限
+{
+&ldquo;name&rdquo; : &ldquo;dev&rdquo;,
+// 对应zadig中的项目名
+&ldquo;namespace&rdquo; : &ldquo;zadig&rdquo;,
+// rule为权限最小单位，下面的代表用户对工作流有查看和执行权限
+&ldquo;rules&rdquo; : [
+{
+&ldquo;verbs&rdquo; : [
+&ldquo;get_workflow&rdquo;, //业务语义权限，实际权限规则见policy_meta表
+&ldquo;run_workflow&rdquo;
+],
+&ldquo;resources&rdquo; : [
+&ldquo;Workflow&rdquo;
+]
+}
+],
+}</p>
+<p>rolebinding
+用户角色绑定表，用来将角色绑定到用户身上，下面的一条记录表示将「zadig」项目下的「dev」角色绑定给uid为「71b8aa87-a10b-11ec-af4e-fa012450189e」的用户
+{
+&ldquo;name&rdquo; : &ldquo;71b8aa87-a10b-11ec-af4e-fa012450189e-zadig-dev&rdquo;,
+&ldquo;namespace&rdquo; : &ldquo;dev&rdquo;,
+&ldquo;subjects&rdquo; : [
+{
+&ldquo;kind&rdquo; : &ldquo;user&rdquo;,
+&ldquo;uid&rdquo; : &ldquo;71b8aa87-a10b-11ec-af4e-fa012450189e&rdquo;
+}
+],
+// 用户绑定的角色
+&ldquo;role_ref&rdquo; : {
+&ldquo;name&rdquo; : &ldquo;dev&rdquo;,
+&ldquo;namespace&rdquo; : &ldquo;zadig&rdquo;
+}
+}</p>
+<p>policy_meta
+权限元信息表，用来将业务语意的权限转换为对应 【endpoint+action】，在提供给OPA的bundle数据里角色下面的权限会被转换成一组url的集合，具体转换后的内容可以看决策数据中的Role
+{
+&ldquo;resource&rdquo; : &ldquo;Workflow&rdquo;,
+&ldquo;alias&rdquo; : &ldquo;工作流&rdquo;,
+&ldquo;rules&rdquo; : [
+{
+&ldquo;action&rdquo; : &ldquo;run_workflow&rdquo;,//对应role中的verbs
+&ldquo;alias&rdquo; : &ldquo;执行&rdquo;,
+&ldquo;rules&rdquo; : [
+{
+&ldquo;method&rdquo; : &ldquo;POST&rdquo;,
+&ldquo;endpoint&rdquo; : &ldquo;/api/aslan/workflow/workflowtask&rdquo;
+},
+{
+&ldquo;method&rdquo; : &ldquo;PUT&rdquo;,
+&ldquo;endpoint&rdquo; : &ldquo;/api/aslan/workflow/workflowtask&rdquo;
+}
+&hellip;
+]
+},
+{
+&ldquo;action&rdquo; : &ldquo;get_workflow&rdquo;,
+&ldquo;alias&rdquo; : &ldquo;查看&rdquo;,
+&ldquo;description&rdquo; : &ldquo;&rdquo;,
+&ldquo;rules&rdquo; : [
+{
+&ldquo;method&rdquo; : &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo; : &ldquo;api/aslan/workflow/workflow&rdquo;
+},
+{
+&ldquo;method&rdquo; : &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo; : &ldquo;/api/aslan/workflow/workflow/find/?*&rdquo;
+},
+&hellip;
+]
+}
+]
+}</p>
+<p>policy
+用户策略定义表，用来定义某项目下策略，下面的一条记录表示在项目「zadig」下有一个「zadig-dev-system-zhangsan」策略
+policy和role表基本一致，主要区别是policy表多了一个match_attributes字段，这里表示对于项目「zadig」下打上label为【key= policy，value= zadig-dev-system-zhangsan-Workflow-zadig-workflow-dev】的workflow有拥有查看工作流和执行工作流的权限
+{
+&ldquo;name&rdquo; : &ldquo;zadig-dev-system-zhangsan&rdquo;,
+&ldquo;namespace&rdquo; : &ldquo;zadig&rdquo;,
+&ldquo;description&rdquo; : &ldquo;zadig dev zhangsan 的权限&rdquo;,
+&ldquo;rules&rdquo; : [
+{
+&ldquo;verbs&rdquo; : [
+&ldquo;get_workflow&rdquo;,
+&ldquo;run_workflow&rdquo;
+],
+&ldquo;resources&rdquo; : [
+&ldquo;Workflow&rdquo;
+],
+&ldquo;kind&rdquo; : &ldquo;resource&rdquo;,
+&ldquo;match_attributes&rdquo; : [ //标签，来自于label表中，用以筛选相匹配标签的资源
+{
+&ldquo;key&rdquo; : &ldquo;policy&rdquo;,
+&ldquo;value&rdquo; : &ldquo;zadig-dev-system-zhangsan-Workflow-zadig-workflow-dev&rdquo;
+}
+]
+}
+}</p>
+<p>policybinding
+用户策略绑定表，用来将策略绑定到用户身上，下面的一条记录表示将「zadig」项目下的「zadig-dev-system-zhangsan」策略绑定给uid为「4fd92962-a4f6-11ec-af4e-fa012450189e」的用户
+{
+&ldquo;name&rdquo; : &ldquo;4fd92962-a4f6-11ec-af4e-fa012450189e-mouuii-15-z201-system-z201-mouuii-15&rdquo;,
+&ldquo;namespace&rdquo; : &ldquo;zadig&rdquo;, //项目名
+&ldquo;subjects&rdquo; : [
+{
+&ldquo;kind&rdquo; : &ldquo;user&rdquo;,
+&ldquo;uid&rdquo; : &ldquo;4fd92962-a4f6-11ec-af4e-fa012450189e&rdquo;
+}
+],
+&ldquo;policy_ref&rdquo; : {
+&ldquo;name&rdquo; : &ldquo;zadig-dev-system-zhangsan&rdquo;, //策略名
+&ldquo;namespace&rdquo; : &ldquo;zadig&rdquo; //项目名
+}
+}</p>
+<p>zadig 数据库中的相关数据模型
+label
+标签表，标签会同时打在权限rule规则和资源上，即表示权限对此标签的资源有相关权限
+{
+&ldquo;type&rdquo; : &ldquo;system&rdquo;,
+&ldquo;key&rdquo; : &ldquo;policy&rdquo;,
+&ldquo;value&rdquo; : &ldquo;zadig-dev-system-zhangsan-Environment-qa&rdquo;,
+&ldquo;project_name&rdquo; : &ldquo;zadig&rdquo;
+}</p>
+<p>labelbinding
+标签资源关联表，记录标签和资源的绑定关系
+{
+&ldquo;resource_type&rdquo; : &ldquo;Workflow&rdquo;,
+&ldquo;resource_name&rdquo; : &ldquo;zadig-workflow-dev&rdquo;,
+&ldquo;project_name&rdquo; : &ldquo;zadig&rdquo;,
+&ldquo;label_id&rdquo; : &ldquo;62318aa4fc41757efdefc20a&rdquo;,
+}</p>
+<p>RBAC 的实现
+决策数据
+决策数据指的是提供给OPA用来执行决策的元数据集，它包括权限数据和资源数据，主要来自于权限管理服务(policy)和后端服务(aslan)，在OPA术语中叫做bundle，OPA会将bundle缓存，提高决策效率，以下为决策数据目录结构</p>
+<p>roles
+角色数据，数据来自上述role和policy_meta表，采集时会将其拼装，因此此处的rules是最终拼装的结果</p>
+<p>{
+&ldquo;roles&rdquo;: [
+{
+&ldquo;name&rdquo;: &ldquo;dev&rdquo;,
+&ldquo;namespace&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;rules&rdquo;: [
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/environment/environments&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/logs/log/workflow/?<em>/tasks/?</em>/service/?<em>&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/logs/log/workflow/?</em>/tasks/?<em>/tests/test/service/?</em>&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/logs/log/workflow/?<em>/tasks/?</em>/tests/test/service/?<em>&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/logs/sse/workflow/build/?</em>/?<em>/?</em>/?<em>&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/logs/sse/workflow/test/?</em>/?<em>/?</em>/?<em>/?</em>&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/project/products/?*/services&rdquo;
+}
+&hellip;
+]
+}
+]
+}</p>
+<p>bindings: role_bindings
+角色绑定数据，数据主要来自于上述 rolebinding 表
+&ldquo;role_bindings&rdquo;:[
+{
+&ldquo;uid&rdquo;: &ldquo;71b8aa87-a10b-11ec-af4e-fa012450189e&rdquo;,
+&ldquo;bindings&rdquo;: [
+{
+&ldquo;namespace&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;role_refs&rdquo;: [
+{
+&ldquo;name&rdquo;: &ldquo;dev&rdquo;,
+&ldquo;namespace&rdquo;: &ldquo;zadig&rdquo;
+}
+]
+}
+]
+}
+]</p>
+<p>resources
+资源数据，zadig目前提供项目下细粒度资源的权限控制，所以需要采集工作流和环境相关资源</p>
+<ul>
+<li>Workflow:工作流采集数据，原始数据存储在后端服务(aslan)</li>
+<li>Environment：采集数据，原始数据存储在后端服务(aslan)
+{
+&ldquo;Workflow&rdquo;:[
+{
+&ldquo;resourceID&rdquo;: &ldquo;zadig-ops-workflow&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;spec&rdquo;: {}
+},
+{
+&ldquo;resourceID&rdquo;: &ldquo;zadig-workflow-dev&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;spec&rdquo;: {}
+},
+{
+&ldquo;resourceID&rdquo;: &ldquo;cvm-andrew-ops-workflow&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;cvm-andrew&rdquo;,
+&ldquo;spec&rdquo;: {}
+}
+&hellip;
+],
+&ldquo;Environment&rdquo;:[
+{
+&ldquo;resourceID&rdquo;: &ldquo;zadig-ops-workflow&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;spec&rdquo;: {}
+},
+{
+&ldquo;resourceID&rdquo;: &ldquo;zadig-workflow-dev&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;spec&rdquo;: {}
+},
+{
+&ldquo;resourceID&rdquo;: &ldquo;cvm-andrew-ops-workflow&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;cvm-andrew&rdquo;,
+&ldquo;spec&rdquo;: {}
+}
+&hellip;
+]
+}</li>
+</ul>
+<p>exemptions
+特殊url采集</p>
+<ul>
+<li>Public
+zadig公开的urls，所有用户(包括未登陆用户都能访问)</li>
+<li>Privileged
+zaidg特权urls，只有系统admin用户能访问</li>
+<li>Registered
+zadig所有注册的urls，没有注册的urls默认登陆用户就能访问
+&ldquo;public&rdquo;: [
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &quot;&quot;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;api/aslan/cluster/agent/?*/agent.yaml&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;api/aslan/health&rdquo;
+}
+&hellip;
+]</li>
+</ul>
+<p>&ldquo;privileged&rdquo;: [
+{
+&ldquo;method&rdquo;: &ldquo;POST&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;api/aslan/cluster/clusters&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;DELETE&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;api/aslan/cluster/clusters/?<em>&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;PUT&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;api/aslan/cluster/clusters/?</em>&rdquo;
+}
+&hellip;
+]</p>
+<p>&ldquo;registered&rdquo;: [
+{
+&ldquo;method&rdquo;: &ldquo;DELETE&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/build/build&rdquo;
+},
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/build/build&rdquo;
+}
+&hellip;
+]</p>
+<p>OPA 实现
+鉴权流程</p>
+<ul>
+<li>校验url是否无注册，如果是无注册，则返回通过</li>
+<li>用户是否是admin，如果是，则返回通过</li>
+<li>请求是否满足，url不是特权url，并且用户为该项目的项目管理员,如果是则返回通过</li>
+<li>请求是否满足，url不是特权url，并且请求匹配该用户绑定的角色的权限，如果是则返回通过(权限不带标签，即rule中不带有matchAttributes)
+关键代码(rego)
+// 鉴权结果
+response = r {
+allow
+roles := all_roles
+r := {
+&ldquo;allowed&rdquo;: true,
+}
+}</li>
+</ul>
+<p>allow {
+&hellip;
+access_is_granted
+}</p>
+<p>// 查询用户匹配的角色 rules ，将查询出的结果匹配http request
+access_is_granted {
+not url_is_privileged //校验url 是否不是特权url</p>
+<pre><code>some rule
+
+allowed_role_plain_rules[rule]
+rule.method == http_request.method
+glob.match(trim(rule.endpoint, &quot;/&quot;), [&quot;/&quot;], concat(&quot;/&quot;, input.parsed_path))
+</code></pre>
+<p>}</p>
+<p>// url 是特权url
+url_is_privileged {
+some i
+data.exemptions.privileged[i].method == http_request.method
+glob.match(trim(data.exemptions.privileged[i].endpoint, &ldquo;/&quot;), [&quot;/&quot;], concat(&quot;/&rdquo;, input.parsed_path))
+}</p>
+<p>// 获取用户匹配的不带标签的角色 rules
+allowed_role_plain_rules[rule] {
+rule := allowed_role_rules[_]
+not rule.matchAttributes
+not rule.matchExpressions
+}</p>
+<p>// 获取请求项目下匹配的角色的rules
+allowed_role_rules[rule] {
+some role_ref
+allowed_roles[role_ref]</p>
+<pre><code>some i
+data.roles.roles[i].name == role_ref.name
+data.roles.roles[i].namespace == role_ref.namespace
+rule := data.roles.roles[i].rules[_]
+</code></pre>
+<p>}</p>
+<p>// 获取用户请求项目下匹配的角色
+allowed_roles[role_ref] {
+some i
+some j
+data.bindings.role_bindings[i].uid == claims.uid
+data.bindings.role_bindings[i].bindings[j].namespace == project_name
+role_ref := data.bindings.role_bindings[i].bindings[j].role_refs[_]
+}</p>
+<p>ABAC 的实现
+决策数据
+决策数据解释同RBAC决策数据
+bindings : policy_bindings
+策略绑定数据，数据来自上述policybinding表</p>
+<p>&ldquo;policy_bindings&rdquo;: [
+{
+&ldquo;uid&rdquo;: &ldquo;4fd92962-a4f6-11ec-af4e-fa012450189e&rdquo;,
+&ldquo;bindings&rdquo;: [
+{
+&ldquo;namespace&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;policy_refs&rdquo;: [
+{
+&ldquo;name&rdquo;: &ldquo;read-project-only&rdquo;,
+&ldquo;namespace&rdquo;: &quot;&quot;
+},
+{
+&ldquo;name&rdquo;: &ldquo;zadig-dev-system-zhangsan&rdquo;,
+&ldquo;namespace&rdquo;: &ldquo;zadig&rdquo;
+}
+]
+}
+]
+},
+&hellip;
+]</p>
+<p>policies
+策略数据，数据来自上述policy表,相比较于roles，他的rule的matchAttributes中会带有标签，会对相匹配的资源进行过滤
+{
+&ldquo;policies&rdquo;: [
+{
+&ldquo;name&rdquo;: &ldquo;zadig-dev-system-zhangsan&rdquo;,
+&ldquo;namespace&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;rules&rdquo;: [
+{
+&ldquo;method&rdquo;: &ldquo;GET&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/environment/configmaps&rdquo;,
+&ldquo;matchAttributes&rdquo;: [//标签，用以筛选资源
+{
+&ldquo;key&rdquo;: &ldquo;policy&rdquo;,
+&ldquo;value&rdquo;: &ldquo;zadig-dev-system-zhangsan-Environment-dev&rdquo;
+}
+]
+},
+{
+&ldquo;method&rdquo;: &ldquo;POST&rdquo;,
+&ldquo;endpoint&rdquo;: &ldquo;/api/aslan/environment/image/deployment&rdquo;,
+&ldquo;matchAttributes&rdquo;: [
+{
+&ldquo;key&rdquo;: &ldquo;policy&rdquo;,
+&ldquo;value&rdquo;: &ldquo;zadig-dev-system-zhangsan-Environment-dev&rdquo;
+},
+{
+&ldquo;key&rdquo;: &ldquo;policy&rdquo;,
+&ldquo;value&rdquo;: &ldquo;zadig-dev-system-zhangsan-Environment-qa&rdquo;
+}
+]
+},
+&hellip;
+]
+}
+]
+}</p>
+<p>resources
+相比于 rbac 的 resource 采集，这里的资源 spec 中会带上 label，用来做细粒度资源匹配
+{
+&ldquo;Workflow&rdquo;:[
+{
+&ldquo;resourceID&rdquo;: &ldquo;zadig-ops-workflow&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;spec&rdquo;: {
+&ldquo;policy&rdquo;:&ldquo;zadig-dev-system-zhangsan-Workflow-dev&rdquo;
+}
+},
+{
+&ldquo;resourceID&rdquo;: &ldquo;mouuii-12&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;mouuii-12&rdquo;,
+&ldquo;spec&rdquo;: {
+&ldquo;policy&rdquo;:&ldquo;Zadig-dev-system-zhangsan-Workflow-dev&rdquo;
+}
+}
+&hellip;
+],
+&ldquo;Environment&rdquo;:[
+{
+&ldquo;resourceID&rdquo;: &ldquo;zadig-ops-workflow&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;zadig&rdquo;,
+&ldquo;spec&rdquo;: {
+&ldquo;policy&rdquo;:&ldquo;zadig-dev-system-zhangsan-Workflow-dev&rdquo;
+}
+},
+{
+&ldquo;resourceID&rdquo;: &ldquo;mouuii-12&rdquo;,
+&ldquo;projectName&rdquo;: &ldquo;mouuii-12&rdquo;,
+&ldquo;spec&rdquo;: {
+&ldquo;policy&rdquo;:&ldquo;Zadig-dev-system-zhangsan-Workflow-dev&rdquo;
+}
+}
+&hellip;
+],
+}</p>
+<p>OPA 实现
+鉴权流程</p>
+<ul>
+<li>单个资源请求匹配，请求是否满足url不是特权url，该用户绑定的策略权限规则匹配该请求，并且该权限的标签匹配用户请求资源的标签，如果是则返回通过(权限带标签，即rule中带matchAttributes)</li>
+<li>如果上述都不满足，会进行多资源请求匹配，该用户绑定的策略权限规则匹配该请求，如果是则会对匹配的资源进行过滤(权限带标签，即rule中带matchAttributes)</li>
+<li>如果所有都不满足，则返回鉴权失败
+关键代码(rego)
+// ######################### 单个资源请求匹配 #########################
+// 判断当前用户是否对单个资源请求有相关权限 即用户对如 url：api/workflow/:id action：get 是否有权限
+// 主要是通过allow中的access_is_granted列表进行判断
+response = r {
+allow
+r := {
+&ldquo;allowed&rdquo;: true,
+}
+}</li>
+</ul>
+<p>allow {
+access_is_granted
+}</p>
+<p>// 单资源请求是否通过授权
+// 1.查询用户拥有的带标签 的 rule
+// 2.获取请求的资源id
+// 3.将请求的资源id和匹配的权限rule标签筛选的资源进行匹配
+access_is_granted {
+not url_is_privileged //校验url 是否不是特权url
+some rule</p>
+<pre><code>allowed_policy_attributive_rules[rule]
+rule.method == http_request.method
+glob.match(trim(rule.endpoint, &quot;/&quot;), [&quot;/&quot;], concat(&quot;/&quot;, input.parsed_path))
+
+any_attributes_match(rule.matchAttributes, rule.resourceType, get_resource_id(rule.idRegex))
+</code></pre>
+<p>}</p>
+<p>// 该资源是否匹配到某rule的标签所筛选出来的资源
+any_attributes_match(attributes, resourceType, resourceID) {
+res := data.resources[resourceType][_]
+res.resourceID == resourceID
+project_name_is_match(res)</p>
+<pre><code>attributes_match(attributes, res)
+</code></pre>
+<p>}</p>
+<p>// rule的matchAttribute为空的时候，不需要匹配
+attributes_match(attributes, res) {
+count(attributes) == 0
+}</p>
+<p>// 任何标签匹配
+attributes_match(attributes, res) {
+attribute := attributes[_]
+attribute_match(attribute, res)
+}</p>
+<p>// 单个标签匹配
+attribute_match(attribute, res) {
+res.spec[attribute.key] == attribute.value
+}</p>
+<p>// ################################### filter资源匹配 ######################
+// 多资源请求，即用户对如 url：api/workflow action：get 是否有权限，并对结果进行过滤
+// rule_is_matched_for_filtering会进行判断是否有匹配的多资源请求权限，通过后会过滤匹配的资源列表，会走user_policy_alowed_resource逻辑，筛选该用户策略所绑定的资源
+// zadig会在response header中设置有权限的resource数组
+response = r {
+not allow
+rule_is_matched_for_filtering
+resource := user_policy_allowed_resources
+r := {
+&ldquo;allowed&rdquo;: true,
+&ldquo;headers&rdquo;: {
+&ldquo;Resources&rdquo;: json.marshal(resource),
+}
+}
+}</p>
+<p>// 该用户是否有相匹配的带标签的角色rule
+rule_is_matched_for_filtering {
+count(user_matched_role_rule_for_filtering) &gt; 0
+}
+// 该用户是否有相匹配的带标签的策略rule
+rule_is_matched_for_filtering {
+count(user_matched_policy_rule_for_filtering) &gt; 0
+}</p>
+<p>// 获取与多资源请求相匹配该用户绑定的策略的带标签的rule列表
+user_matched_policy_rule_for_filtering[rule] {
+some rule</p>
+<pre><code>allowed_policy_attributive_rules[rule]
+rule.method == http_request.method
+glob.match(trim(rule.endpoint, &quot;/&quot;), [&quot;/&quot;], concat(&quot;/&quot;, input.parsed_path))
+not rule.idRegex
+</code></pre>
+<p>}
+// 获取与多资源请求相匹配该用户绑定的角色的带标签的rule列表
+user_matched_role_rule_for_filtering[rule] {
+some rule</p>
+<pre><code>allowed_role_attributive_rules[rule]
+rule.method == http_request.method
+glob.match(trim(rule.endpoint, &quot;/&quot;), [&quot;/&quot;], concat(&quot;/&quot;, input.parsed_path))
+not rule.idRegex
+</code></pre>
+<p>}</p>
+<p>// 用户策略能够匹配的资源列表
+user_policy_allowed_resources[resourceID] {
+some rule</p>
+<pre><code>user_matched_policy_rule_for_filtering[rule]
+res := data.resources[rule.resourceType][_]
+project_name_is_match(res)
+attributes_match(rule.matchAttributes, res)
+resourceID := res.resourceID
+</code></pre>
+<p>}</p>
+<p>// 用户匹配到符合当前request url 的rule
+user_matched_policy_rule_for_filtering[rule] {
+some rule</p>
+<pre><code>allowed_policy_attributive_rules[rule]
+rule.method == http_request.method
+glob.match(trim(rule.endpoint, &quot;/&quot;), [&quot;/&quot;], concat(&quot;/&quot;, input.parsed_path))
+not rule.idRegex
+</code></pre>
+<p>}</p>
+<p>// 用户某项目下匹配的带attribute 的 策略 rules
+allowed_policy_attributive_rules[rule] {
+rule := allowed_policy_rules[_]
+rule.matchAttributes
+}</p>
+<p>// 用户某项目下匹配的策略 rules
+allowed_policy_rules[rule] {
+some policy_ref
+allowed_policies[policy_ref]</p>
+<pre><code>some i
+data.policies.policies[i].name == policy_ref.name
+data.policies.policies[i].namespace == policy_ref.namespace
+rule := data.policies.policies[i].rules[_]
+</code></pre>
+<p>}</p>
+<p>// 当前用户某项目下匹配的策略
+allowed_policies[policy_ref] {
+some i
+some j
+data.bindings.policy_bindings[i].uid == claims.uid
+data.bindings.policy_bindings[i].bindings[j].namespace == project_name
+policy_ref := data.bindings.policy_bindings[i].bindings[j].policy_refs[_]
+}</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="/posts/k8s/lec3.1/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>K8s-Lec2.1</span>
+  </a>
+  <a class="next" href="/posts/k8s/lec2.1/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>K8s-Lec2.1</span>
+  </a>
+</nav>
+
+  </footer><script src="https://utteranc.es/client.js"
+        repo="cit965/blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="/">CIT计算机兴趣小组</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
