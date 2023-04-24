@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>K8s-Lec1.1 | CIT计算机兴趣小组</title>
+<meta name="keywords" content="" />
+<meta name="description" content="1.1 介绍k8s k8s is kubernetes
+kubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶
+在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量
+Kubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的
+抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上
+k8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商
+如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上
+以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间
+开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务
+关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的
+谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务
+除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的
+当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中
+自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序
+然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务
+现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难
+幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难
+整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务
+当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道">
+<meta name="author" content="">
+<link rel="canonical" href="/posts/k8s/lec1.1/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.85.0" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="K8s-Lec1.1" />
+<meta property="og:description" content="1.1 介绍k8s k8s is kubernetes
+kubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶
+在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量
+Kubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的
+抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上
+k8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商
+如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上
+以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间
+开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务
+关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的
+谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务
+除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的
+当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中
+自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序
+然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务
+现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难
+幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难
+整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务
+当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/k8s/lec1.1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-26T19:29:58&#43;08:00" />
+<meta property="article:modified_time" content="2021-12-26T19:29:58&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s-Lec1.1"/>
+<meta name="twitter:description" content="1.1 介绍k8s k8s is kubernetes
+kubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶
+在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量
+Kubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的
+抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上
+k8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商
+如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上
+以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间
+开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务
+关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的
+谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务
+除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的
+当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中
+自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序
+然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务
+现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难
+幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难
+整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务
+当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/posts/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "K8s-Lec1.1",
+      "item": "/posts/k8s/lec1.1/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "K8s-Lec1.1",
+  "name": "K8s-Lec1.1",
+  "description": "1.1 介绍k8s k8s is kubernetes\nkubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶\n在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量\nKubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的\n抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上\nk8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商\n如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上\n以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间\n开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务\n关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的\n谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务\n除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的\n当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中\n自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序\n然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务\n现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难\n幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难\n整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务\n当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道",
+  "keywords": [
+    
+  ],
+  "articleBody": "1.1 介绍k8s k8s is kubernetes\nkubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶\n在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量\nKubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的\n抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上\nk8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商\n如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上\n以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间\n开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务\n关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的\n谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务\n除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的\n当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中\n自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序\n然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务\n现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难\n幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难\n整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务\n当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道\n",
+  "wordCount" : "65",
+  "inLanguage": "en",
+  "datePublished": "2021-12-26T19:29:58+08:00",
+  "dateModified": "2021-12-26T19:29:58+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/posts/k8s/lec1.1/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "CIT计算机兴趣小组",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="CIT计算机兴趣小组 (Alt + H)">CIT计算机兴趣小组</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/courses" title="课程">
+                    <span>课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/timeline/" title="历程">
+                    <span>历程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/maintainers" title="讲师">
+                    <span>讲师</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      K8s-Lec1.1
+    </h1>
+    <div class="post-meta"><span title='2021-12-26 19:29:58 +0800 +0800'>December 26, 2021</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h3 id="11-介绍k8s">1.1 介绍k8s<a hidden class="anchor" aria-hidden="true" href="#11-介绍k8s">#</a></h3>
+<p><img loading="lazy" src="https://raw.githubusercontent.com/cit965/blog-picture/master/imperative-declarative-k8s.jpeg" alt=""  />
+
+k8s is kubernetes<br>
+kubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶<br>
+在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里
+如何发音Kubernetes和什么是 k8？
+在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量<br>
+Kubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的</p>
+<h3 id="抽象出基础设施">抽象出基础设施<a hidden class="anchor" aria-hidden="true" href="#抽象出基础设施">#</a></h3>
+<p>当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上<br>
+k8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商<br>
+如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上</p>
+<p><img loading="lazy" src="https://raw.githubusercontent.com/cit965/blog-picture/master/Screen%20Shot%202021-12-21%20at%202.47.14%20PM.png" alt=""  />
+</p>
+<h3 id="以声明方式部署">以声明方式部署<a hidden class="anchor" aria-hidden="true" href="#以声明方式部署">#</a></h3>
+<p>Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康
+一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间<br>
+开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务</p>
+<h3 id="关于k8s项目">关于k8s项目<a hidden class="anchor" aria-hidden="true" href="#关于k8s项目">#</a></h3>
+<p>最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的<br>
+谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务<br>
+除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的<br>
+当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中</p>
+<h3 id="自动化微服务的管理">自动化微服务的管理<a hidden class="anchor" aria-hidden="true" href="#自动化微服务的管理">#</a></h3>
+<p>在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序<br>
+然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务<br>
+现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难<br>
+幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难<br>
+整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务<br>
+当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="/posts/leetcode/4.median-of-two-sorted-arrays/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>4.median of Two Sorted Arrays</span>
+  </a>
+  <a class="next" href="/posts/os/os1/lec2/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>操作系统-lec2</span>
+  </a>
+</nav>
+
+  </footer><script src="https://utteranc.es/client.js"
+        repo="cit965/blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="/">CIT计算机兴趣小组</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

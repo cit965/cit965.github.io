@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>4.median of Two Sorted Arrays | CIT计算机兴趣小组</title>
+<meta name="keywords" content="" />
+<meta name="description" content="题目 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+算法的时间复杂度应该为 O(log (m&#43;n))
+题解 给出两个有序数组，要求找出这两个数组合并以后的有序数组中的中位数。要求时间复杂度为 O(log (m&#43;n))。
+这一题最容易想到的办法是把两个数组合并，然后取出中位数。但是合并有序数组的操作是 O(m&#43;n) 的，不符合题意。看到题目给的 log 的时间复杂度，很容易联想到二分搜索。
+由于要找到最终合并以后数组的中位数，两个数组的总大小也知道，所以中间这个位置也是知道的。只需要二分搜索一个数组中切分的位置，另一个数组中切分的位置也能得到。为了使得时间复杂度最小，所以二分搜索两个数组中长度较小的那个数组。
+关键的问题是如何切分数组 1 和数组 2 。其实就是如何切分数组 1 。先随便二分产生一个 midA，切分的线何时算满足了中位数的条件呢？即，线左边的数都小于右边的数，即，nums1[midA-1] ≤ nums2[midB] &amp;&amp; nums2[midB-1] ≤ nums1[midA] 。如果这些条件都不满足，切分线就需要调整。如果 nums1[midA] &lt; nums2[midB-1]，说明 midA 这条线划分出来左边的数小了，切分线应该右移；如果 nums1[midA-1] &gt; nums2[midB]，说明 midA 这条线划分出来左边的数大了，切分线应该左移。经过多次调整以后，切分线总能找到满足条件的解。
+假设现在找到了切分的两条线了，数组 1 在切分线两边的下标分别是 midA - 1 和 midA。数组 2 在切分线两边的下标分别是 midB - 1 和 midB。最终合并成最终数组，如果数组长度是奇数，那么中位数就是 max(nums1[midA-1], nums2[midB-1])。如果数组长度是偶数，那么中间位置的两个数依次是：max(nums1[midA-1], nums2[midB-1]) 和 min(nums1[midA], nums2[midB])，那么中位数就是 (max(nums1[midA-1], nums2[midB-1]) &#43; min(nums1[midA], nums2[midB])) / 2。图示见下图： 代码 /* * @lc app=leetcode.">
+<meta name="author" content="">
+<link rel="canonical" href="/posts/leetcode/4.median-of-two-sorted-arrays/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.85.0" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="4.median of Two Sorted Arrays" />
+<meta property="og:description" content="题目 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+算法的时间复杂度应该为 O(log (m&#43;n))
+题解 给出两个有序数组，要求找出这两个数组合并以后的有序数组中的中位数。要求时间复杂度为 O(log (m&#43;n))。
+这一题最容易想到的办法是把两个数组合并，然后取出中位数。但是合并有序数组的操作是 O(m&#43;n) 的，不符合题意。看到题目给的 log 的时间复杂度，很容易联想到二分搜索。
+由于要找到最终合并以后数组的中位数，两个数组的总大小也知道，所以中间这个位置也是知道的。只需要二分搜索一个数组中切分的位置，另一个数组中切分的位置也能得到。为了使得时间复杂度最小，所以二分搜索两个数组中长度较小的那个数组。
+关键的问题是如何切分数组 1 和数组 2 。其实就是如何切分数组 1 。先随便二分产生一个 midA，切分的线何时算满足了中位数的条件呢？即，线左边的数都小于右边的数，即，nums1[midA-1] ≤ nums2[midB] &amp;&amp; nums2[midB-1] ≤ nums1[midA] 。如果这些条件都不满足，切分线就需要调整。如果 nums1[midA] &lt; nums2[midB-1]，说明 midA 这条线划分出来左边的数小了，切分线应该右移；如果 nums1[midA-1] &gt; nums2[midB]，说明 midA 这条线划分出来左边的数大了，切分线应该左移。经过多次调整以后，切分线总能找到满足条件的解。
+假设现在找到了切分的两条线了，数组 1 在切分线两边的下标分别是 midA - 1 和 midA。数组 2 在切分线两边的下标分别是 midB - 1 和 midB。最终合并成最终数组，如果数组长度是奇数，那么中位数就是 max(nums1[midA-1], nums2[midB-1])。如果数组长度是偶数，那么中间位置的两个数依次是：max(nums1[midA-1], nums2[midB-1]) 和 min(nums1[midA], nums2[midB])，那么中位数就是 (max(nums1[midA-1], nums2[midB-1]) &#43; min(nums1[midA], nums2[midB])) / 2。图示见下图： 代码 /* * @lc app=leetcode." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/leetcode/4.median-of-two-sorted-arrays/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-27T22:50:08&#43;08:00" />
+<meta property="article:modified_time" content="2021-12-27T22:50:08&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="4.median of Two Sorted Arrays"/>
+<meta name="twitter:description" content="题目 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+算法的时间复杂度应该为 O(log (m&#43;n))
+题解 给出两个有序数组，要求找出这两个数组合并以后的有序数组中的中位数。要求时间复杂度为 O(log (m&#43;n))。
+这一题最容易想到的办法是把两个数组合并，然后取出中位数。但是合并有序数组的操作是 O(m&#43;n) 的，不符合题意。看到题目给的 log 的时间复杂度，很容易联想到二分搜索。
+由于要找到最终合并以后数组的中位数，两个数组的总大小也知道，所以中间这个位置也是知道的。只需要二分搜索一个数组中切分的位置，另一个数组中切分的位置也能得到。为了使得时间复杂度最小，所以二分搜索两个数组中长度较小的那个数组。
+关键的问题是如何切分数组 1 和数组 2 。其实就是如何切分数组 1 。先随便二分产生一个 midA，切分的线何时算满足了中位数的条件呢？即，线左边的数都小于右边的数，即，nums1[midA-1] ≤ nums2[midB] &amp;&amp; nums2[midB-1] ≤ nums1[midA] 。如果这些条件都不满足，切分线就需要调整。如果 nums1[midA] &lt; nums2[midB-1]，说明 midA 这条线划分出来左边的数小了，切分线应该右移；如果 nums1[midA-1] &gt; nums2[midB]，说明 midA 这条线划分出来左边的数大了，切分线应该左移。经过多次调整以后，切分线总能找到满足条件的解。
+假设现在找到了切分的两条线了，数组 1 在切分线两边的下标分别是 midA - 1 和 midA。数组 2 在切分线两边的下标分别是 midB - 1 和 midB。最终合并成最终数组，如果数组长度是奇数，那么中位数就是 max(nums1[midA-1], nums2[midB-1])。如果数组长度是偶数，那么中间位置的两个数依次是：max(nums1[midA-1], nums2[midB-1]) 和 min(nums1[midA], nums2[midB])，那么中位数就是 (max(nums1[midA-1], nums2[midB-1]) &#43; min(nums1[midA], nums2[midB])) / 2。图示见下图： 代码 /* * @lc app=leetcode."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/posts/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "4.median of Two Sorted Arrays",
+      "item": "/posts/leetcode/4.median-of-two-sorted-arrays/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "4.median of Two Sorted Arrays",
+  "name": "4.median of Two Sorted Arrays",
+  "description": "题目 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。\n算法的时间复杂度应该为 O(log (m+n))\n题解 给出两个有序数组，要求找出这两个数组合并以后的有序数组中的中位数。要求时间复杂度为 O(log (m+n))。\n这一题最容易想到的办法是把两个数组合并，然后取出中位数。但是合并有序数组的操作是 O(m+n) 的，不符合题意。看到题目给的 log 的时间复杂度，很容易联想到二分搜索。\n由于要找到最终合并以后数组的中位数，两个数组的总大小也知道，所以中间这个位置也是知道的。只需要二分搜索一个数组中切分的位置，另一个数组中切分的位置也能得到。为了使得时间复杂度最小，所以二分搜索两个数组中长度较小的那个数组。\n关键的问题是如何切分数组 1 和数组 2 。其实就是如何切分数组 1 。先随便二分产生一个 midA，切分的线何时算满足了中位数的条件呢？即，线左边的数都小于右边的数，即，nums1[midA-1] ≤ nums2[midB] \u0026amp;\u0026amp; nums2[midB-1] ≤ nums1[midA] 。如果这些条件都不满足，切分线就需要调整。如果 nums1[midA] \u0026lt; nums2[midB-1]，说明 midA 这条线划分出来左边的数小了，切分线应该右移；如果 nums1[midA-1] \u0026gt; nums2[midB]，说明 midA 这条线划分出来左边的数大了，切分线应该左移。经过多次调整以后，切分线总能找到满足条件的解。\n假设现在找到了切分的两条线了，数组 1 在切分线两边的下标分别是 midA - 1 和 midA。数组 2 在切分线两边的下标分别是 midB - 1 和 midB。最终合并成最终数组，如果数组长度是奇数，那么中位数就是 max(nums1[midA-1], nums2[midB-1])。如果数组长度是偶数，那么中间位置的两个数依次是：max(nums1[midA-1], nums2[midB-1]) 和 min(nums1[midA], nums2[midB])，那么中位数就是 (max(nums1[midA-1], nums2[midB-1]) + min(nums1[midA], nums2[midB])) / 2。图示见下图： 代码 /* * @lc app=leetcode.",
+  "keywords": [
+    
+  ],
+  "articleBody": "题目 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。\n算法的时间复杂度应该为 O(log (m+n))\n题解 给出两个有序数组，要求找出这两个数组合并以后的有序数组中的中位数。要求时间复杂度为 O(log (m+n))。\n这一题最容易想到的办法是把两个数组合并，然后取出中位数。但是合并有序数组的操作是 O(m+n) 的，不符合题意。看到题目给的 log 的时间复杂度，很容易联想到二分搜索。\n由于要找到最终合并以后数组的中位数，两个数组的总大小也知道，所以中间这个位置也是知道的。只需要二分搜索一个数组中切分的位置，另一个数组中切分的位置也能得到。为了使得时间复杂度最小，所以二分搜索两个数组中长度较小的那个数组。\n关键的问题是如何切分数组 1 和数组 2 。其实就是如何切分数组 1 。先随便二分产生一个 midA，切分的线何时算满足了中位数的条件呢？即，线左边的数都小于右边的数，即，nums1[midA-1] ≤ nums2[midB] \u0026\u0026 nums2[midB-1] ≤ nums1[midA] 。如果这些条件都不满足，切分线就需要调整。如果 nums1[midA] nums2[midB]，说明 midA 这条线划分出来左边的数大了，切分线应该左移。经过多次调整以后，切分线总能找到满足条件的解。\n假设现在找到了切分的两条线了，数组 1 在切分线两边的下标分别是 midA - 1 和 midA。数组 2 在切分线两边的下标分别是 midB - 1 和 midB。最终合并成最终数组，如果数组长度是奇数，那么中位数就是 max(nums1[midA-1], nums2[midB-1])。如果数组长度是偶数，那么中间位置的两个数依次是：max(nums1[midA-1], nums2[midB-1]) 和 min(nums1[midA], nums2[midB])，那么中位数就是 (max(nums1[midA-1], nums2[midB-1]) + min(nums1[midA], nums2[midB])) / 2。图示见下图： 代码 /* * @lc app=leetcode.cn id=4 lang=golang * * [4] 寻找两个正序数组的中位数 */ // @lc code=start func findMedianSortedArrays(nums1 []int, nums2 []int) float64 { // 假设 nums1 的长度小 \tif len(nums1)  len(nums2) { return findMedianSortedArrays(nums2, nums1) } low, high, k, nums1Mid, nums2Mid := 0, len(nums1), (len(nums1)+len(nums2)+1)1, 0, 0 for low  high { // nums1: ……………… nums1[nums1Mid-1] | nums1[nums1Mid] …………………… \t// nums2: ……………… nums2[nums2Mid-1] | nums2[nums2Mid] …………………… \tnums1Mid = low + (high-low)1 // 分界限右侧是 mid，分界线左侧是 mid - 1 \tnums2Mid = k - nums1Mid if nums1Mid  0 \u0026\u0026 nums1[nums1Mid-1]  nums2[nums2Mid] { // nums1 中的分界线划多了，要向左边移动 \thigh = nums1Mid - 1 } else if nums1Mid != len(nums1) \u0026\u0026 nums1[nums1Mid] nums2[nums2Mid-1] { // nums1 中的分界线划少了，要向右边移动 \tlow = nums1Mid + 1 } else { // 找到合适的划分了，需要输出最终结果了 \t// 分为奇数偶数 2 种情况 \tbreak } } midLeft, midRight := 0, 0 if nums1Mid == 0 { midLeft = nums2[nums2Mid-1] } else if nums2Mid == 0 { midLeft = nums1[nums1Mid-1] } else { midLeft = max(nums1[nums1Mid-1], nums2[nums2Mid-1]) } if (len(nums1)+len(nums2))\u00261 == 1 { return float64(midLeft) } if nums1Mid == len(nums1) { midRight = nums2[nums2Mid] } else if nums2Mid == len(nums2) { midRight = nums1[nums1Mid] } else { midRight = min(nums1[nums1Mid], nums2[nums2Mid]) } return float64(midLeft+midRight) / 2 } func max(a int, b int) int { if a  b { return a } return b } func min(a int, b int) int { if a b { return a } return b } // @lc code=end  ",
+  "wordCount" : "315",
+  "inLanguage": "en",
+  "datePublished": "2021-12-27T22:50:08+08:00",
+  "dateModified": "2021-12-27T22:50:08+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/posts/leetcode/4.median-of-two-sorted-arrays/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "CIT计算机兴趣小组",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="CIT计算机兴趣小组 (Alt + H)">CIT计算机兴趣小组</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/courses" title="课程">
+                    <span>课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/timeline/" title="历程">
+                    <span>历程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/maintainers" title="讲师">
+                    <span>讲师</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      4.median of Two Sorted Arrays
+    </h1>
+    <div class="post-meta"><span title='2021-12-27 22:50:08 +0800 +0800'>December 27, 2021</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h3 id="题目">题目<a hidden class="anchor" aria-hidden="true" href="#题目">#</a></h3>
+<p>给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。</p>
+<p>算法的时间复杂度应该为 O(log (m+n))</p>
+<h3 id="题解">题解<a hidden class="anchor" aria-hidden="true" href="#题解">#</a></h3>
+<p>给出两个有序数组，要求找出这两个数组合并以后的有序数组中的中位数。要求时间复杂度为 O(log (m+n))。</p>
+<p>这一题最容易想到的办法是把两个数组合并，然后取出中位数。但是合并有序数组的操作是 O(m+n) 的，不符合题意。看到题目给的 log 的时间复杂度，很容易联想到二分搜索。</p>
+<p>由于要找到最终合并以后数组的中位数，两个数组的总大小也知道，所以中间这个位置也是知道的。只需要二分搜索一个数组中切分的位置，另一个数组中切分的位置也能得到。为了使得时间复杂度最小，所以二分搜索两个数组中长度较小的那个数组。</p>
+<p>关键的问题是如何切分数组 1 和数组 2 。其实就是如何切分数组 1 。先随便二分产生一个 midA，切分的线何时算满足了中位数的条件呢？即，线左边的数都小于右边的数，即，nums1[midA-1] ≤ nums2[midB] &amp;&amp; nums2[midB-1] ≤ nums1[midA] 。如果这些条件都不满足，切分线就需要调整。如果 nums1[midA] &lt; nums2[midB-1]，说明 midA 这条线划分出来左边的数小了，切分线应该右移；如果 nums1[midA-1] &gt; nums2[midB]，说明 midA 这条线划分出来左边的数大了，切分线应该左移。经过多次调整以后，切分线总能找到满足条件的解。</p>
+<p>假设现在找到了切分的两条线了，数组 1 在切分线两边的下标分别是 midA - 1 和 midA。数组 2 在切分线两边的下标分别是 midB - 1 和 midB。最终合并成最终数组，如果数组长度是奇数，那么中位数就是 max(nums1[midA-1], nums2[midB-1])。如果数组长度是偶数，那么中间位置的两个数依次是：max(nums1[midA-1], nums2[midB-1]) 和 min(nums1[midA], nums2[midB])，那么中位数就是 (max(nums1[midA-1], nums2[midB-1]) + min(nums1[midA], nums2[midB])) / 2。图示见下图：
+<img loading="lazy" src="https://raw.githubusercontent.com/cit965/blog-picture/master/Screen%20Shot%202021-12-27%20at%2011.03.58%20PM.png" alt=""  />
+</p>
+<h3 id="代码">代码<a hidden class="anchor" aria-hidden="true" href="#代码">#</a></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * @lc app=leetcode.cn id=4 lang=golang
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * [4] 寻找两个正序数组的中位数
+</span><span style="color:#75715e"> */</span>
+
+<span style="color:#75715e">// @lc code=start
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">findMedianSortedArrays</span>(<span style="color:#a6e22e">nums1</span> []<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">nums2</span> []<span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#75715e">// 假设 nums1 的长度小
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">nums1</span>) &gt; len(<span style="color:#a6e22e">nums2</span>) {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">findMedianSortedArrays</span>(<span style="color:#a6e22e">nums2</span>, <span style="color:#a6e22e">nums1</span>)
+	}
+	<span style="color:#a6e22e">low</span>, <span style="color:#a6e22e">high</span>, <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">nums1Mid</span>, <span style="color:#a6e22e">nums2Mid</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, len(<span style="color:#a6e22e">nums1</span>), (len(<span style="color:#a6e22e">nums1</span>)<span style="color:#f92672">+</span>len(<span style="color:#a6e22e">nums2</span>)<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">&gt;&gt;</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">low</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">high</span> {
+		<span style="color:#75715e">// nums1:  ……………… nums1[nums1Mid-1] | nums1[nums1Mid] ……………………
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// nums2:  ……………… nums2[nums2Mid-1] | nums2[nums2Mid] ……………………
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">nums1Mid</span> = <span style="color:#a6e22e">low</span> <span style="color:#f92672">+</span> (<span style="color:#a6e22e">high</span><span style="color:#f92672">-</span><span style="color:#a6e22e">low</span>)<span style="color:#f92672">&gt;&gt;</span><span style="color:#ae81ff">1</span> <span style="color:#75715e">// 分界限右侧是 mid，分界线左侧是 mid - 1
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">nums2Mid</span> = <span style="color:#a6e22e">k</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">nums1Mid</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">nums1Mid</span> &gt; <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">nums1</span>[<span style="color:#a6e22e">nums1Mid</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] &gt; <span style="color:#a6e22e">nums2</span>[<span style="color:#a6e22e">nums2Mid</span>] { <span style="color:#75715e">// nums1 中的分界线划多了，要向左边移动
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">high</span> = <span style="color:#a6e22e">nums1Mid</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">nums1Mid</span> <span style="color:#f92672">!=</span> len(<span style="color:#a6e22e">nums1</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">nums1</span>[<span style="color:#a6e22e">nums1Mid</span>] &lt; <span style="color:#a6e22e">nums2</span>[<span style="color:#a6e22e">nums2Mid</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] { <span style="color:#75715e">// nums1 中的分界线划少了，要向右边移动
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">low</span> = <span style="color:#a6e22e">nums1Mid</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#75715e">// 找到合适的划分了，需要输出最终结果了
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// 分为奇数偶数 2 种情况
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">break</span>
+		}
+	}
+	<span style="color:#a6e22e">midLeft</span>, <span style="color:#a6e22e">midRight</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">nums1Mid</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">midLeft</span> = <span style="color:#a6e22e">nums2</span>[<span style="color:#a6e22e">nums2Mid</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+	} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">nums2Mid</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">midLeft</span> = <span style="color:#a6e22e">nums1</span>[<span style="color:#a6e22e">nums1Mid</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">midLeft</span> = <span style="color:#a6e22e">max</span>(<span style="color:#a6e22e">nums1</span>[<span style="color:#a6e22e">nums1Mid</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], <span style="color:#a6e22e">nums2</span>[<span style="color:#a6e22e">nums2Mid</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+	}
+	<span style="color:#66d9ef">if</span> (len(<span style="color:#a6e22e">nums1</span>)<span style="color:#f92672">+</span>len(<span style="color:#a6e22e">nums2</span>))<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> {
+		<span style="color:#66d9ef">return</span> float64(<span style="color:#a6e22e">midLeft</span>)
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">nums1Mid</span> <span style="color:#f92672">==</span> len(<span style="color:#a6e22e">nums1</span>) {
+		<span style="color:#a6e22e">midRight</span> = <span style="color:#a6e22e">nums2</span>[<span style="color:#a6e22e">nums2Mid</span>]
+	} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">nums2Mid</span> <span style="color:#f92672">==</span> len(<span style="color:#a6e22e">nums2</span>) {
+		<span style="color:#a6e22e">midRight</span> = <span style="color:#a6e22e">nums1</span>[<span style="color:#a6e22e">nums1Mid</span>]
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">midRight</span> = <span style="color:#a6e22e">min</span>(<span style="color:#a6e22e">nums1</span>[<span style="color:#a6e22e">nums1Mid</span>], <span style="color:#a6e22e">nums2</span>[<span style="color:#a6e22e">nums2Mid</span>])
+	}
+	<span style="color:#66d9ef">return</span> float64(<span style="color:#a6e22e">midLeft</span><span style="color:#f92672">+</span><span style="color:#a6e22e">midRight</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">max</span>(<span style="color:#a6e22e">a</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">a</span> &gt; <span style="color:#a6e22e">b</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">min</span>(<span style="color:#a6e22e">a</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">a</span> &lt; <span style="color:#a6e22e">b</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>
+}
+
+<span style="color:#75715e">// @lc code=end
+</span><span style="color:#75715e"></span>
+
+</code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="/posts/leetcode/5.longest-palindromic-substring/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>5.longest Palindromic Substring</span>
+  </a>
+  <a class="next" href="/posts/k8s/lec1.1/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>K8s-Lec1.1</span>
+  </a>
+</nav>
+
+  </footer><script src="https://utteranc.es/client.js"
+        repo="cit965/blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="/">CIT计算机兴趣小组</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

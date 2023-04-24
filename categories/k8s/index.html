@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>k8s | CIT计算机兴趣小组</title>
+<meta name="keywords" content="" />
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="/categories/k8s/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://raw.githubusercontent.com/cit965/blog-picture/master/src%3Dhttp___hbimg.b0.upaiyun.com_bba3fd3f863741518dfeb09065a69896008985322f92-TdNRJ4_fw658%26refer%3Dhttp___hbimg.b0.upaiyun.jpeg">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.85.0" />
+<link rel="alternate" type="application/rss+xml" href="/categories/k8s/index.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="k8s" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/categories/k8s/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="k8s"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="CIT计算机兴趣小组 (Alt + H)">CIT计算机兴趣小组</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/courses" title="课程">
+                    <span>课程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/timeline/" title="历程">
+                    <span>历程</span>
+                </a>
+            </li>
+            <li>
+                <a href="/maintainers" title="讲师">
+                    <span>讲师</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>k8s</h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>K8s-Lec2.1
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>1.1 container &#43; orchestration 容器&#43;编排，很多k8s书第二章都会讲容器，为什么大家都要讲呢？因为k8s=container &#43; orchestration
+Kubernetes 是一个创建、部署和管理分布式应用程序的平台。这些应用程序有许多不同的形状和大小，但最终，它们都由一个或多个在单独机器上运行的程序组成。这些程序接受输入，操作数据，然后返回结果。在考虑构建分布式系统之前，我们必须首先考虑如何构建包含这些程序并构成分布式系统的应用程序容器映像。
+1.2 container 1.2.1 什么是打包 应用程序通常由语言运行时、库和源代码组成。在许多情况下，您的应用程序依赖于外部共享库，如 libc 和 libssl。这些外部库通常作为您已经安装在特定机器上的操作系统中的共享组件提供
+1.2.2 为什么需要打包 当在程序员笔记本电脑上开发的应用程序依赖于共享库时，这种对共享库的依赖会导致问题，而当程序被推广到生产操作系统时，共享库就不可用了。即使开发环境和生产环境共享完全相同的操作系统版本，当开发人员忘记在他们部署到生产环境的包中包含依赖的资产文件时，也会出现问题
+在处理应用程序时，将它们打包以便于与其他人共享通常是有帮助的。多数人使用的容器默认工具 Docker 可以轻松地打包可执行文件并将其推送到远程注册表，以便其他人随后可以使用。在撰写本文时，容器注册在所有主要的公共云中都可用，在云中构建映像的服务在其中的许多云中也可用。您也可以使用开源或商业系统运行您自己的注册表。这些注册中心使用户可以轻松地管理和部署私有映像，而镜像仓库则可以轻松地与持续交付系统集成
+下面两张对比图解释了docker打包的最主要的好处： 1.2.3 云原生如何打包 使用docker https://docs.docker.com/get-started/
+1.3 orchestration 为什么需要编排
+容器编排使容器的部署、管理、伸缩和联网自动化。需要部署和管理成百上千个 Linux 容器和主机的企业可以从容器编排中获益
+Kubernetes 消除了部署和扩展容器化应用程序所涉及的许多手动流程。您可以将运行 Linux 容器的主机组(物理或虚拟机)集群在一起，而 Kubernetes 为您提供了简单有效地管理这些集群的平台。更广泛地说，它可以帮助您在生产环境中完全实现和依赖基于容器的基础结构
+当您使用容器编排工具(如 Kubernetes)时，您将使用 YAML 或 JSON 文件描述应用程序的配置。配置文件告诉组态管理工具在哪里可以找到容器映像，如何建立网络，以及在哪里存储日志
+您可以使用 Kubernetes 模式来管理基于容器的应用程序和服务的配置、生命周期和规模。这些可重复的模式是 Kubernetes 开发人员构建完整系统所需的工具
+使用k8s https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-03-23 20:31:47 +0800 +0800'>March 23, 2022</span></footer>
+  <a class="entry-link" aria-label="post link to K8s-Lec2.1" href="/posts/k8s/lec2.1/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>K8s-Lec1.1
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>1.1 介绍k8s k8s is kubernetes
+kubernetes这个词在希腊语中是指驾驶员或舵手，即掌舵者——站在舵轮上的人，船长负责掌舵，舵手负责驾驶
+在了解了更多关于k8s所做的事情之后，你会发现这个名字恰到好处。舵手保持船的航向，执行船长的命令，并报告船的航向。库伯内特斯管理您的应用程序并报告其状态，而您决定您希望系统去哪里 如何发音Kubernetes和什么是 k8？ 在书面和口头对话中，它也被称为 Kube 或 k8s，8表示第一个字母和最后一个字母之间省略的字母数量
+Kubernetes 是一个软件系统，用于自动部署和管理复杂的、大规模的应用系统，这些系统由在集装箱中运行的计算机进程组成。让我们来了解一下它是做什么的，以及它是怎么做的
+抽象出基础设施 当软件开发人员或操作人员决定部署一个应用程序时，他们通过 k8s 来完成，而不是将应用程序部署到单独的计算机上
+k8s为用户和应用程序提供了一个基于底层硬件的抽象层,这个抽象能够标准化云，k8s 的流行迫使所有主要的云供应商将 k8s 整合到他们的产品中。客户现在可以通过 Kubernetes 提供的标准 api 集将应用程序部署到任何云提供商
+如下图所示，底层基础设施(即计算机、网络和其他组件)对应用程序是隐藏的，这使得开发和配置它们变得更加容易,基础设施中的所有差异都由 k8s 处理，您可以将重点放在应用程序及其包含的业务逻辑上
+以声明方式部署 Kubernetes 使用声明性模型定义应用程序，如下图所示。您描述组成应用程序的组件，然后 Kubernetes 将此描述转换为一个正在运行的应用程序。然后，它通过根据需要重新启动或重新创建应用程序的某些部分来保持应用程序的健康 一旦将应用程序部署到 Kubernetes，它就会接管应用程序的日常管理。如果应用程序失败，Kubernetes 将自动重新启动它。如果硬件出现故障或者基础设施拓扑发生变化，需要将应用程序移动到其他机器上，Kubernetes 会自己完成这些工作。负责操作系统的工程师可以专注于大局，而不是在细节上浪费时间
+开发和运营工程师是船长，他们舒服地坐在扶手椅上做高层决策，而 k8s 则是舵手，负责在应用程序和基础设施驶过的汹涌水域中操控系统的低层任务
+关于k8s项目 最初是由 Google 开发的。谷歌几乎总是在容器中运行应用程序。早在2014年，据报道他们每周开始生产20亿个集装箱。也就是说，每秒钟有3000多个集装箱，而今天的数字要高得多。他们在分布在世界各地数十个数据中心的数千台计算机上运行这些容器。现在想象一下手动完成所有这些工作。很明显，你需要自动化，在如此大的规模下，它最好是完美的
+谷歌工作量的巨大规模迫使它们开发解决方案，以便使成千上万软件组件的开发和管理变得可管理和具有成本效益。多年来，谷歌开发了一个名为 Borg 的内部系统(后来又开发了一个名为 Omega 的新系统) ，帮助应用程序开发者和运营商管理成千上万的应用程序和服务
+除了简化开发和管理之外，这些系统还帮助它们更好地利用其基础设施。这在任何组织中都很重要，但是当你操作成千上万台机器时，即使是在利用率上的微小改进也意味着节省数百万，因此开发这样一个系统的动机是显而易见的
+当 Kubernetes 发布的时候，早在1.0版本正式发布之前，其他公司，比如 Red Hat，一直站在开源软件的最前沿，很快加入并帮助开发了这个项目。它的发展最终远远超出了其创始人的期望，今天可以说是世界上领先的开源项目之一，有数以万计的个人参与其中
+自动化微服务的管理 在过去，大多数应用都是大型整体石。应用程序的组件是紧密耦合的，它们都在一个计算机进程中运行。应用程序是由一个大型开发团队作为一个单元开发的，应用程序的部署非常简单。你把它安装在一台功能强大的计算机上，并提供它所需要的小配置。横向扩展应用程序几乎是不可能的，所以当您需要增加应用程序的容量时，您必须升级硬件——换句话说，垂直扩展应用程序
+然后是微服务范例。这些独石被分成几十个，有时是几百个独立的过程。这使得组织可以将他们的开发部门划分为更小的团队，其中每个团队只开发整个系统的一部分——只是一些微型服务
+现在，每个微服务都是一个单独的应用程序，有自己的开发和发布周期。不同微服务的依赖关系将不可避免地随着时间的推移而发生分化。一个微服务需要库的一个版本，而另一个微服务需要同一个库的另一个版本，可能是不兼容的版本。在同一个操作系统中运行这两个应用程序变得困难
+幸运的是，容器本身解决了这个问题，每个微服务都需要不同的环境，但是现在每个微服务都是一个单独的应用程序，必须单独管理。申请数量的增加使得这一点变得更加困难
+整个应用程序的各个部分不再需要在同一台计算机上运行，这使得扩展整个系统更加容易，但也意味着应用程序需要配置为相互通信。对于只有少数几个组件的系统，这通常可以手动完成，但是现在通常可以看到部署了超过100个微服务
+当系统由许多微服务组成时，自动化管理是至关重要的。k8s提供了这种自动化。它提供的特性使得管理数百个微服务的任务变得微不足道</p>
+  </section>
+  <footer class="entry-footer"><span title='2021-12-26 19:29:58 +0800 +0800'>December 26, 2021</span></footer>
+  <a class="entry-link" aria-label="post link to K8s-Lec1.1" href="/posts/k8s/lec1.1/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="/">CIT计算机兴趣小组</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
