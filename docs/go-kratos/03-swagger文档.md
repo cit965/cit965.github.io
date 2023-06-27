@@ -39,11 +39,11 @@ srv.HandlePrefix("/q/", openAPIhandler)
 
 ```go
 // internal/biz/user.go 判断用户是否重复，重复的话返回 ErrUserAlreadyExist
-// CreateGreeter creates a User, and returns the new User.
-func (uc *GreeterUsecase) CreateGreeter(ctx context.Context, u *User) (*User, error) {
+// Register creates a User, and returns the new User.
+func (uc *UserUsecase) Register(ctx context.Context, u *User) (*User, error) {
 	// 查询数据库是否有相同的用户名，如果有返回错误
-	uc.log.WithContext(ctx).Infof("CreateGreeter: %v", u.Name)
-	isExist, err := uc.repo.ListByHello(ctx, u.Name)
+	uc.log.WithContext(ctx).Infof("Register: %v", u.Name)
+	isExist, err := uc.repo.ListByUserName(ctx, u.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,7 @@ func (uc *GreeterUsecase) CreateGreeter(ctx context.Context, u *User) (*User, er
 	}
 	return uc.repo.Save(ctx, u)
 }
+
 ```
 
 ```go
