@@ -4,7 +4,7 @@ sidebar_position: 3
 title: 03-kubernetes架构
 ---
 
-### 为什么我们需要k8s
+### 架构层次
 
 
 我们已经说过Kubernetes是云的操作系统，它位于应用程序和基础设施之间。Kubernetes运行在基础设施上，应用程序运行在Kubernetes上。如图 3.1 所示
