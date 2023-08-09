@@ -95,19 +95,11 @@ func main() {
 
 每个记录器(Logger)都与一个处理程序(Handler)相关联。记录器输出方法从方法参数创建 Record，并将其传递给处理程序，处理程序决定如何处理它。有一个默认记录器，可通过调用相应记录器方法的顶级函数（如信息和错误）访问。
 
-日志记录(Logger)由时间、级别、消息和一组键值对组成，其中键是字符串，值可以是任何类型的。举个例子，
+日志记录(Logger)由时间、级别、消息和一组键值对组成，其中键是字符串，值可以是任何类型的。实际使用：
 
 ```go
 slog.Info("hello", "count", 3)
-```
-
-创建包含呼叫时间、信息级别、消息“hello”以及键“count”和值为 3 的单个对的记录(Logger)。
-
-
-打印如下：
-
-```shell
-2023/08/09 10:36:18 INFO hello count=3
+//2023/08/09 10:36:18 INFO hello count=3
 ```
 
 
@@ -147,13 +139,14 @@ func Compare[T Ordered](x, y T) int {
 
 	result := cmp.Compare(2, 3)
 	slog.Info("2 cmp 3", "result", result)
+    //2023/08/09 10:39:04 INFO 2 cmp 3 result=-1
 ```    
 
-结果如下：
 
-```shell
+#### min
 
-2023/08/09 10:39:04 INFO 2 cmp 3 result=-1
-
-```
-
+```go
+	minResult := min(2, 4, 5, 5, 56)
+	slog.Info("min 2,3,4,5,56", "result", minResult)
+    //2023/08/09 10:42:37 INFO min 2,3,4,5,56 result=2
+```    
