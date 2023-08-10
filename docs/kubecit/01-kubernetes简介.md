@@ -9,6 +9,11 @@ title: 01-初始化项目
 2. kratos 2.7
 3. goland
 
+
+### 项目介绍
+
+kubecit 是cit社区第一个开源多云管理平台，帮助企业管理云主机，k8s，多集群，使用 golang 语言实现，web框架为 kratos
+
 ### 前置课程
 
 - go语言基础
