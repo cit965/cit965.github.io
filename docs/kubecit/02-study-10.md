@@ -74,3 +74,11 @@ func (u *UserUsecase) RegisterUser(ctx context.Context, user *User) (*User, erro
 ### 第十一课：实现单元测试
 
 使用 dockertest 库，实现data层单元测试，执行测试前拉起数据库镜像，测试完毕销毁。
+
+### 第十二课：实现biz层集成测试
+
+使用 gomock 来 mock 掉 repo 层，方便我们进行 biz 逻辑层的集成测试
+
+### 第十三课：添加 github action 
+
+添加 github action 来进行代码提交后的编译测试校验
