@@ -1,6 +1,10 @@
 name: Deploy to GitHub Pages
 
-on: [push, pull_request]:
+on:
+  push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
     # Review gh actions docs if you want to further define triggers, paths, etc
