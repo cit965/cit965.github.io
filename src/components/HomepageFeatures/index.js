@@ -4,32 +4,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: '自学',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        你不需要任何计算机基础，你只需要努力、认证、花时间就够了。此前那种有劲没处使的感觉，那种付出在多时间也得不到回报的感觉，从此烟消云散。
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: '免费',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        机构几万高昂的学费，让你望而却步，我是南哥，陪你一起学习，一起坚持，改变你的人生轨迹。
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: '愿景',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        终有一天，我们中国技术要引领世界，让我们一起提升工程师的社会地位和幸福感，不再996.
       </>
     ),
   },
