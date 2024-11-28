@@ -1,0 +1,8 @@
+{
+  "label": "cs50x",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "哈佛大学 python 基础课程，https://cs50.harvard.edu/python/2022"
+  }
+}
