@@ -35,3 +35,10 @@ sidebar_position: 1
 # TODO
 
 - Python 语言入门 ， 翻译哈佛大学 python 入门课笔记 ： https://cs50.harvard.edu/python/2022/notes/0/
+
+
+# 社区
+
+![](/img/wechat.png)
+
+
