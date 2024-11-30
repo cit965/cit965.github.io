@@ -96,7 +96,7 @@ run: sidekiq: (pid 9462) 146s; run: log: (pid 9488) 143s
   - 默认账号：`root`
   - 默认密码：`cat /etc/gitlab/initial_root_password | grep Password:`
 
-![image-20240801084138220](W:\images\image-20240801084138220.png)
+![image-20240801084138220](https://github.com/user-attachments/assets/b8df476c-c75e-44e3-8cbe-8ab5a6f0634e)
 
 ### 1.5、修改root登录密码
 
