@@ -1,4 +1,4 @@
-# Jenkins部署
+![image-20240801104743892](https://github.com/user-attachments/assets/ad6c1213-be3a-4f9b-b2da-2e14068f91a5)# Jenkins部署
 
 [TOC]
 
@@ -96,23 +96,26 @@ run: sidekiq: (pid 9462) 146s; run: log: (pid 9488) 143s
   - 默认账号：`root`
   - 默认密码：`cat /etc/gitlab/initial_root_password | grep Password:`
 
-![image-20240801084138220](W:\images\image-20240801084138220.png)
+![image-20240801084138220](https://github.com/user-attachments/assets/b8df476c-c75e-44e3-8cbe-8ab5a6f0634e)
 
 ### 1.5、修改root登录密码
 
 - 点击右上角用户头像，在下拉菜单中点`Preferences`，在左侧列表中开打`password`。本案例中使用的root密码为pwd12345，注意密码长度至少8位。
 
-![image-20240801084243076](W:\images\image-20240801084243076.png)
+![image-20240801084243076](https://github.com/user-attachments/assets/b48871e6-6c97-4392-be15-18cc08a26b3b)
+
 
 ### 1.6、创建demo测试项目
 
 - 创建一个项目名称叫`demo`
 
-![image-20240801084341225](W:\images\image-20240801084341225.png)
+![image-20240801084341225](https://github.com/user-attachments/assets/f61bb8d7-169d-4b62-b451-47c524f53ffe)
 
-![image-20240801084359145](W:\images\image-20240801084359145.png)
+![image-20240801084359145](https://github.com/user-attachments/assets/888de9ee-a998-4a27-a3e7-a2b027387280)
 
-![image-20240801084430271](W:\images\image-20240801084430271.png)
+
+![image-20240801084430271](https://github.com/user-attachments/assets/2d787ffd-414e-43fd-9fb2-8495061b6b2d)
+
 
 ### 1.7、上传代码
 
@@ -131,7 +134,8 @@ run: sidekiq: (pid 9462) 146s; run: log: (pid 9488) 143s
 
 ### 1.8、验证上传的代码
 
-![image-20240801085133641](W:\images\image-20240801085133641.png)
+![image-20240801085133641](https://github.com/user-attachments/assets/a6c651ca-3e2e-483b-9a44-cb2284ef3bd3)
+
 
 ## 二、部署Jenkins所需软件
 
@@ -200,25 +204,31 @@ Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.16.1+1-LTS-1, mixed mode)
 72a19165668b4b1daec409d9edce6c4e
 ```
 
-![image-20240801090052026](W:\images\image-20240801090052026.png)
+![image-20240801090052026](https://github.com/user-attachments/assets/7e53334a-7530-497d-812f-99ecbfe1a6ed)
+
 
 ### 3.2、选择插件安装方式
 
 - 注意：如果有插件安装失败也没关系，因为安装插件需要网络，结束后可以点击重试。
 
-![image-20240801090300928](W:\images\image-20240801090300928.png)
+![image-20240801090300928](https://github.com/user-attachments/assets/25a46c30-1e5b-4bd8-a7c8-609ae91b04be)
 
-![image-20240801090441001](W:\images\image-20240801090441001.png)
+
+![image-20240801090441001](https://github.com/user-attachments/assets/6fe7814a-f0d5-4997-9b8f-1c6ce24d94f8)
+
 
 ### 3.3、创建管理员用户
 
 - 本案例将初始的管理员账号和密码都设置为admin
 
-![image-20240801092520897](W:\images\image-20240801092520897.png)
+![image-20240801092520897](https://github.com/user-attachments/assets/3083fcb4-a12f-426d-a619-63432a75abb9)
 
-![image-20240801092534124](W:\images\image-20240801092534124.png)
 
-![image-20240801092554136](W:\images\image-20240801092554136.png)
+![image-20240801092534124](https://github.com/user-attachments/assets/10291a86-7fa0-4252-a50d-ca6e4116d150)
+
+
+![image-20240801092554136](https://github.com/user-attachments/assets/8e70af38-a3fb-48af-ac17-663d9be80cc8)
+
 
 ### 3.4、Jsenkins插件管理
 
@@ -226,7 +236,8 @@ Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.16.1+1-LTS-1, mixed mode)
 - 进入Manage Jenkins——>Plugins——>Advancedsettings最下面有Update Site（升级站点），设置为如下链接，并点“提交”按钮
 - https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json
 
-![image-20240801092901948](W:\images\image-20240801092901948.png)
+![image-20240801092901948](https://github.com/user-attachments/assets/8d4a0f2b-bd3e-4080-8080-76b78777ee82)
+
 
 - 然后重启Jenkins
 
@@ -294,7 +305,8 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
 - “Dashboard”——>“ManageJenkins”——>“Security”——>“Authentication”
 - 将授权策略修改为“Role-Based Strategy”，并保存设置。
 
-![image-20240801094908186](W:\images\image-20240801094908186.png)
+![image-20240801094908186](https://github.com/user-attachments/assets/7d6419e0-b29f-4138-b846-4e3a86cd7d0f)
+
 
 ### 4.2、角色
 
@@ -319,13 +331,15 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
 
 - 添加Global roles
 
-![image-20240801100102301](W:\images\image-20240801100102301.png)
+![image-20240801100102301](https://github.com/user-attachments/assets/bf0a1797-30cf-4009-b853-efc248e93cc1)
+
 
 - 添加item roles
 
-![image-20240801100206805](W:\images\image-20240801100206805.png)
+![image-20240801100206805](https://github.com/user-attachments/assets/07ad4a02-8fc7-45d1-a6a6-812067fb536d)
 
-![image-20240801100314029](W:\images\image-20240801100314029.png)
+
+![image-20240801100314029](https://github.com/user-attachments/assets/1550f226-dd17-4020-800c-ddf526f38a23)
 
 #### 4.2.4、创建用户
 
@@ -334,40 +348,53 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
 - ”Dashboard“——>”Manage Jenkins“——>”Users“，在右上角点击”CreateUser“，创建用户。
 - 添加两个用户`zhangsan`，`lisi`
 
-![image-20240801100600798](W:\images\image-20240801100600798.png)
+![image-20240801100600798](https://github.com/user-attachments/assets/8c6ba281-da2e-4f06-be37-805ebdda317b)
 
-![image-20240801100641053](W:\images\image-20240801100641053.png)
 
-![image-20240801100710660](W:\images\image-20240801100710660.png)
+![image-20240801100641053](https://github.com/user-attachments/assets/673e72f5-40a3-4c65-ad4e-fce2691df4f0)
 
-![image-20240801100733839](W:\images\image-20240801100733839.png)
+
+![image-20240801100710660](https://github.com/user-attachments/assets/d9e02a17-6554-4fdc-8b78-6faa1be54364)
+
+
+![image-20240801100733839](https://github.com/user-attachments/assets/6ad100f2-d144-40a6-b96a-3043f881befb)
+
 
 ##### 4.2.4.2、绑定角色
 
 - ”Dashboard“——"Manage Jenkins"——>”Manage and Assign Roles“，然后点击”Assign Roles“
 - 为zhangsan用户绑定baseRole和role1角色
 
-![image-20240801100937250](W:\images\image-20240801100937250.png)
+![image-20240801100937250](https://github.com/user-attachments/assets/687ddf05-b564-4705-bf9f-3e81a6099a58)
 
-![image-20240801101006750](W:\images\image-20240801101006750.png)
 
-![image-20240801101036768](W:\images\image-20240801101036768.png)
+![image-20240801101006750](https://github.com/user-attachments/assets/49051da8-07c3-4d94-a3a8-68e6d941e08d)
 
-![image-20240801101105782](W:\images\image-20240801101105782.png)
 
-![image-20240801101126395](W:\images\image-20240801101126395.png)
+![image-20240801101036768](https://github.com/user-attachments/assets/be2c06a1-629a-41da-bb71-0b2a9ba6a5c8)
 
-![image-20240801101155921](W:\images\image-20240801101155921.png)
+
+![image-20240801101105782](https://github.com/user-attachments/assets/65439041-d6ae-49b6-941e-51de5a4589eb)
+
+
+![image-20240801101126395-17329642924181](https://github.com/user-attachments/assets/4aa58edb-2e47-4c45-8d71-d33b8625058a)
+
+
+![image-20240801101831527](https://github.com/user-attachments/assets/8d5e9ae1-6bfb-4df5-8bb2-4512b1d90512)
 
 - 为lisi用户绑定baseRole和role2角色
 
-![image-20240801101306411](W:\images\image-20240801101306411.png)
+![image-20240801101306411](https://github.com/user-attachments/assets/38aa6400-1fb7-4716-a079-19c9317299f1)
 
-![image-20240801101329294](W:\images\image-20240801101329294.png)
 
-![image-20240801101356751](W:\images\image-20240801101356751.png)
+![image-20240801101329294](https://github.com/user-attachments/assets/3d9e13c2-00d4-4808-be81-548676759d20)
 
-![image-20240801101436135](W:\images\image-20240801101436135.png)
+
+![image-20240801101356751](https://github.com/user-attachments/assets/7df0792f-3da5-487f-a631-246e3e3a52bc)
+
+
+![image-20240801101436135](https://github.com/user-attachments/assets/344e93af-0d91-4be7-b854-aaaf42de47b0)
+
 
 #### 4.2.5、创建项目测试权限
 
@@ -378,27 +405,34 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
 
 - ”Dashboard“——>”新建Item“——>”确定“按钮
 
-![image-20240801101800322](W:\images\image-20240801101800322.png)
+![image-20240801101800322](https://github.com/user-attachments/assets/f8ce41b3-fd0e-420c-a759-32d27bf17fc1)
 
-![image-20240801101831527](W:\images\image-20240801101831527.png)
+
+![image-20240801101831527](https://github.com/user-attachments/assets/5b82c489-0cd2-4e4a-9849-e0399b0222e0)
+
 
 - 创建`lisi`项目
 - ”Dashboard“——>”新建Item“——>”确定“按钮
 
-![image-20240801101936477](W:\images\image-20240801101936477.png)
+![image-20240801101936477](https://github.com/user-attachments/assets/44bcb669-687b-4346-b3e3-35fa6f2d9ae3)
 
-![image-20240801101954735](W:\images\image-20240801101954735.png)
 
-![image-20240801102015500](W:\images\image-20240801102015500.png)
+![image-20240801101954735](https://github.com/user-attachments/assets/4c8441d8-e221-42c6-81d0-6dc064e73c16)
+
+
+![image-20240801102015500](https://github.com/user-attachments/assets/6a836cde-a1dc-4618-92d3-e3a53321d26c)
+
 
 ##### 4.2.5.2、测试权限
 
 - 分别用`zhangsan`和`lisi`的身份登录到系统
 - 可以发现，每个用户只能管理属于自己的角色范围内的项目
 
-![image-20240801102130642](W:\images\image-20240801102130642.png)
+![image-20240801102130642](https://github.com/user-attachments/assets/080b7e7c-75d3-4b32-8598-242d77f61e16)
 
-![image-20240801102159859](W:\images\image-20240801102159859.png)
+
+![image-20240801102159859](https://github.com/user-attachments/assets/22b49104-e7f6-4d4c-b1ce-343506a2e54b)
+
 
 ## 五、凭证管理
 
@@ -433,11 +467,13 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
 
 - ”Manage jenkins“——>”Credentials“，打开如下页面，并点击”全局“，进入全局凭据管理界面，如下图所示
 
-![image-20240801103756564](W:\images\image-20240801103756564.png)
+![image-20240801103756564](https://github.com/user-attachments/assets/d3fd2cf7-fc5d-435d-a841-c63e2019f67f)
+
 
 - 在如下界面中，点击右上角的”Add Credentials“按钮，添加凭据
 
-![image-20240801103844776](W:\images\image-20240801103844776.png)
+![image-20240801103844776](https://github.com/user-attachments/assets/45c7014d-a19a-4ecf-8744-58a448e4de4a)
+
 
 #### 5.2.2、添加凭据参数
 
@@ -449,11 +485,12 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
   - ID：选填（设置平局的唯一标识，不设置会自动分配一个唯一标识）
   - 描述：选填（凭据名称，此处最好添加一下，使用凭据的时候便于识别，不设置就是用用户名）
 
-![image-20240801104206740](W:\images\image-20240801104206740.png)
+![image-20240801104206740](https://github.com/user-attachments/assets/340494a5-041a-499f-9e0c-0cf59fb7c979)
 
 - 点击”Create“创建此凭据，添加结果如下：
 
-![image-20240801104231911](W:\images\image-20240801104231911.png)
+![image-20240801104231911](https://github.com/user-attachments/assets/d540467b-ccb4-4351-bd5e-6a9c77940459)
+
 
 #### 5.2.3、使用凭据
 
@@ -463,27 +500,31 @@ Pipeline: DeclarativeLocalization: Chinese (Simplified)
 [root@jenkins ~]# yum -y install git
 ```
 
-![image-20240801104336919](W:\images\image-20240801104336919.png)
+![image-20240801104336919](https://github.com/user-attachments/assets/95ee354a-44f4-4c17-bbd3-5cbccffa5415)
 
-![image-20240801104404031](W:\images\image-20240801104404031.png)
+
+![image-20240801104404031](https://github.com/user-attachments/assets/24bcb7ea-41e8-430e-80e9-db56b48ae9fe)
 
 ##### 5.2.3.2、配置源码管理
 
-![image-20240801104551015](W:\images\image-20240801104551015.png)
+![image-20240801104551015](https://github.com/user-attachments/assets/8b86900f-ed31-4c50-94c8-f90355236d57)
+
 
 ##### 5.2.3.3、发布项目
 
-![image-20240801104619070](W:\images\image-20240801104619070.png)
+![image-20240801104619070](https://github.com/user-attachments/assets/faa7be8d-c996-4a43-8aaa-8dae42832787)
+
 
 - 运行成功之后，如果没有报错，可以刷新页面，就可以看到**绿色**的标识了
 
-![image-20240801104743892](W:\images\image-20240801104743892.png)
-
+![image-20240801104743892](https://github.com/user-attachments/assets/ef35ba99-202c-4904-98f0-2ecc57b8c02b)
 ### 5.3、添加SSH类型的凭据
 
 - SSH类型的凭据可以使Jenkins在拉去gitlab中的代码时使用密钥对的方式，不仅实现了免密连接，同时也会对数据进行加密，是一种安全可靠的凭据方式。
 
-![image-20240801105241201](W:\images\image-20240801105241201.png)
+![image-20240801105241201](https://github.com/user-attachments/assets/3bf63c73-ea6f-479e-8c4f-73bf209b4bb7)
+
+
 
 #### 5.3.1、Jenkins主机生成密钥对
 
@@ -504,19 +545,21 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClBYGM15IosBfenQszhhjbet06ww1YeapOb0lv7M+o
 
 - 用root用户登录gitlab，点击右上角的头像，在下拉菜单中点”perferneces“，然后在左侧点击”SSH Keys“
 
-![image-20240801105620870](W:\images\image-20240801105620870.png)
+![image-20240801105620870](https://github.com/user-attachments/assets/7aacf718-f1a8-406f-8a21-a4234b0f1727)
 
-![image-20240801105636511](W:\images\image-20240801105636511.png)
+![image-20240801105636511](https://github.com/user-attachments/assets/dd3ed68e-4785-4fdd-8ebf-cab005436495)
 
 #### 5.3.3、Jenkins添加SSH凭据
 
 - ”Manage jenkins“——>”Credentials“，打开如下页面，并点击”全局”，进入全局凭据界面
 
-![image-20240801105823187](W:\images\image-20240801105823187.png)
+![image-20240801105823187](https://github.com/user-attachments/assets/78c53beb-75a9-4310-b9d3-c4755702778f)
 
-![image-20240801105840669](W:\images\image-20240801105840669.png)
 
-![image-20240801105916561](W:\images\image-20240801105916561.png)
+![image-20240801105840669](https://github.com/user-attachments/assets/df1de22e-e6af-4d0f-812c-05f0cd97cc35)
+
+
+![image-20240801105916561](https://github.com/user-attachments/assets/c73ca36c-bd21-488f-b105-06d6c33c5d8b)
 
 #### 5.3.4、添加凭据参数
 
@@ -560,17 +603,21 @@ cKm534YYtALBTEVXsDalL9SP5JRnBqKPPzF7Wu88d/rEL7r1UaQ2
 -----END RSA PRIVATE KEY-----
 ```
 
-![image-20240801110243905](W:\images\image-20240801110243905.png)
+![image-20240801110243905-17329648398705](https://github.com/user-attachments/assets/e336747a-cc99-4939-b4e1-f3a8d7b79c64)
 
-![image-20240801110312149](W:\images\image-20240801110312149.png)
+
+![image-20240801110312149](https://github.com/user-attachments/assets/36327c19-9c64-4e91-9f12-fa20b4c3ab6f)
+
 
 #### 5.3.5、测试凭据
 
 ##### 5.3.5.1、创建test02项目
 
-![image-20240801110351605](W:\images\image-20240801110351605.png)
+![image-20240801110351605](https://github.com/user-attachments/assets/76594c57-59f6-455f-9171-7b37b0eb98da)
 
-![image-20240801110411455](W:\images\image-20240801110411455.png)
+
+![image-20240801110411455](https://github.com/user-attachments/assets/c7d619d2-2671-4fc2-93ea-e348bbe740f2)
+
 
 ##### 5.3.5.2、配置源码管理
 
@@ -588,14 +635,17 @@ Warning: Permanently added '192.168.93.102' (ECDSA) to the list of known hosts.
 root@192.168.93.102's password: 
 ```
 
-![image-20240801110728582](W:\images\image-20240801110728582.png)
+![image-20240801110728582](https://github.com/user-attachments/assets/fd66ccf9-27ca-447f-9c8f-9656dc3f0fc9)
 
-![image-20240801110920201](W:\images\image-20240801110920201.png)
+
+![image-20240801110920201](https://github.com/user-attachments/assets/53888f17-855b-430d-b4c8-2e4361712edd)
+
 
 ##### 5.3.5.3、发布项目
 
-![image-20240801110958040](W:\images\image-20240801110958040.png)
+![image-20240801110958040](https://github.com/user-attachments/assets/8ba45c2e-42e1-4bb9-9afd-85f1da7aba75)
+
 
 - 运行成功之后，如果没有报错，可以刷新页面，就可以看到**绿色**的标识了
 
-![image-20240801111020176](W:\images\image-20240801111020176.png)
+![image-20240801111020176](https://github.com/user-attachments/assets/13115b5b-02ac-4609-ad3e-058ca74764dc)
