@@ -1,0 +1,8 @@
+{
+  "label": "编程入门",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "如果你从未接触过编程，那你可以从这里开始"
+  }
+}
