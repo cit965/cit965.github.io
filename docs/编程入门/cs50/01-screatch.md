@@ -2,7 +2,6 @@
 sidebar_position: 2
 ---
 
-
 -    [欢迎！](https://cs50.harvard.edu/x/2024/notes/0/#welcome)
 -    [未来会发生什么](https://cs50.harvard.edu/x/2024/notes/0/#whats-ahead)
 -    [社区！](https://cs50.harvard.edu/x/2024/notes/0/#community)
@@ -106,55 +105,55 @@ sidebar_position: 2
 -   如果您愿意，您可以了解有关[ASCII 的](https://en.wikipedia.org/wiki/ASCII)更多信息。
 -   由于二进制最多只能计数_255，_因此我们受到 ASCII 表示的字符数的限制。
 
-## [Unicode](https://cs50.harvard.edu/x/2024/notes/0/#unicode)
+##  [统一码](https://cs50.harvard.edu/x/2024/notes/0/#unicode)
 
--   As time has rolled on, there are more and more ways to communicate via text.
--   Since there were not enough digits in binary to represent all the various characters that could be represented by humans, the _Unicode_ standard expanded the number of bits that can be transmitted and understood by computers. Unicode includes not only special characters, but emoji as well.
--   There are emoji that you probably use every day. The following may look familiar to you:
+-   随着时间的推移，通过文字进行交流的方式越来越多。
+-   由于二进制中没有足够的数字来表示人类可以表示的所有各种字符，因此_Unicode_标准扩展了计算机可以传输和理解的位数。 Unicode 不仅包括特殊字符，还包括表情符号。
+-   您可能每天都会使用一些表情符号。您可能会觉得以下内容很熟悉：
     
     ![emoji](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide103.png "emoji")
     
--   Computer scientists faced a challenge when wanting to assign various skin tones to each emoji to allow the communication to be further personalized. In this case, the creators and contributors of emoji decided that the initial bits would be the structure of the emoji itself, followed by skin tone.
--   For example, the unicode for a generic thumbs up is `U+1F44D`. However, the following represents the same thumbs up with a different skin tone: `U+1F44D U+1F3FD`.
--   More and more features are being added to the Unicode standard to represent further characters and emoji.
--   If you wish, you can learn more about [Unicode](https://en.wikipedia.org/wiki/Unicode).
--   If you wish, you can learn more about [emoji](https://en.wikipedia.org/wiki/Emoji).
+-   当计算机科学家想要为每个表情符号分配不同的肤色以使通信进一步个性化时，他们面临着一个挑战。在这种情况下，表情符号的创建者和贡献者决定最初的部分是表情符号本身的结构，然后是肤色。
+-   例如，通用竖起大拇指的 unicode 是`U+1F44D` 。然而，以下代表不同肤色的相同竖起大拇指： `U+1F44D U+1F3FD` 。
+-   Unicode 标准中添加了越来越多的功能来表示更多字符和表情符号。
+-   如果您愿意，您可以了解有关[Unicode 的](https://en.wikipedia.org/wiki/Unicode)更多信息。
+-   如果您愿意，您可以了解有关[表情符号](https://en.wikipedia.org/wiki/Emoji)的更多信息。
 
-## [Representation](https://cs50.harvard.edu/x/2024/notes/0/#representation)
+##  [表示](https://cs50.harvard.edu/x/2024/notes/0/#representation)
 
--   Zeros and ones can be used to represent color.
--   Red, green, and blue (called `RGB`) is a combination of three numbers.
+-   零和一可以用来表示颜色。
+-   红、绿和蓝（称为`RGB` ）是三个数字的组合。
     
     ![red green blue boxes](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide118.png "red green blue boxes")
     
--   Taking our previously used 72, 73, and 33, which said `HI!` via text, would be interpreted by image readers as a light shade of yellow. The red value would be 72, the green value would be 73, and the blue would be 33.
+-   以我们之前使用过的 72、73 和 33 为例，它们表示`HI!`通过文本，图像阅读器会将其解释为浅黄色。红色值为 72，绿色值为 73，蓝色值为 33。
     
     ![yellow box](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide120.png "yellow box")
     
--   Further, zeros and ones can be used to represent images, videos, and music!
--   Images are simply collections of RGB values.
--   Videos are sequences of many images that are stored together, just like a flipbook.
--   Music can be represented through MIDI data.
+-   此外，零和一可以用来表示图像、视频和音乐！
+-   图像只是 RGB 值的集合。
+-   视频是存储在一起的许多图像的序列，就像活页簿一样。
+-   音乐可以通过 MIDI 数据来表示。
 
-## [Algorithms](https://cs50.harvard.edu/x/2024/notes/0/#algorithms)
+##  [算法](https://cs50.harvard.edu/x/2024/notes/0/#algorithms)
 
--   Problem-solving is central to computer science and computer programming.
--   Imagine the basic problem of trying to locate a single name in a phone book.
--   How might you go about this?
--   One approach could be to simply read from page one to the next to the next until reaching the last page.
--   Another approach could be to search two pages at a time.
--   A final and perhaps better approach could be to go to the middle of the phone book and ask, “Is the name I am looking for to the left or to the right?” Then, repeat this process, cutting the problem in half and half and half.
--   Each of these approaches could be called algorithms. The speed of each of these algorithms can be pictured as follows in what is called _big-O notation_:
+-   解决问题是计算机科学和计算机编程的核心。
+-   想象一下尝试在电话簿中查找单个姓名的基本问题。
+-   你会怎样做呢？
+-   一种方法可能是简单地从第一页读到下一页，直到读到最后一页。
+-   另一种方法可能是一次搜索两个页面。
+-   最后一种也许更好的方法可能是转到电话簿的中间并询问：“我要查找的名字是在左边还是右边？”然后，重复这个过程，将问题分成两半。
+-   这些方法中的每一种都可以称为算法。这些算法的速度可以用所谓的_大 O 表示法_表示如下：
     
     ![big o notation](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide141.png "big o notation")
     
-    Notice that the first algorithm, highlighted in red, has a big-O of `n` because if there are 100 names in the phone book, it could take up to 100 tries to find the correct name. The second algorithm, where two pages were searched at a time, has a big-O of ‘n/2’ because we searched twice as fast through the pages. The final algorithm has a big-O of log<sub data-immersive-translate-walked="8991be99-747f-4531-abe0-8e84b62d7369">2</sub>n as doubling the problem would only result in one more step to solve the problem.
+    请注意，第一个算法（以红色突出显示）的`n`为大 O，因为如果电话簿中有 100 个姓名，则可能需要最多 100 次尝试才能找到正确的姓名。第二种算法一次搜索两个页面，其大小为“n/2”，因为我们搜索页面的速度是原来的两倍。最终算法的 big-O 为 log <sub data-immersive-translate-walked="8991be99-747f-4531-abe0-8e84b62d7369">2</sub> n，因为将问题加倍只会导致解决问题需要多一步。
     
 
-## [Pseudocode](https://cs50.harvard.edu/x/2024/notes/0/#pseudocode)
+##  [伪代码](https://cs50.harvard.edu/x/2024/notes/0/#pseudocode)
 
--   The ability to create _pseudocode_ is central to one’s success in both this class and in computer programming.
--   Pseudocode is a human-readable version of your code. For example, considering the third algorithm above, we could compose pseudocode as follows:
+-   创建_伪代码_的能力对于本课程和计算机编程的成功至关重要。
+-   伪代码是代码的人类可读版本。例如，考虑上面的第三种算法，我们可以编写如下伪代码：
     
     ```
     1  Pick up phone book
@@ -172,17 +171,17 @@ sidebar_position: 2
     13     Quit
     ```
     
--   Pseudocoding is such an important skill for at least two reasons. First, when you pseudocode before you create formal code, it allows you to think through the logic of your problem in advance. Second, when you pseudocode, you can later provide this information to others that are seeking to understand your coding decisions and how your code works.
--   Notice that the language within our pseudocode has some unique features. First, some of these lines begin with verbs like _pick up,_ _open,_ _look at._ Later, we will call these _functions_.
--   Second, notice that some lines include statements like `if` or `else if.` These are called _conditionals_.
--   Third, notice how there are expressions that can be stated as _true_ or _false,_ such as “person is earlier in the book.” We call these _boolean expressions_.
--   Finally, notice how these statements like “go back to line 3.” We call these _loops_.
--   These building blocks are the fundamentals of programming.
--   In the context of _Scratch_, which is discussed below, we will use each of the above basic building blocks of programming.
+-   伪编码之所以如此重要，至少有两个原因。首先，当您在创建正式代码之前进行伪代码时，它可以让您提前思考问题的逻辑。其次，当您进行伪代码时，您可以稍后将此信息提供给其他寻求了解您的编码决策以及代码如何工作的人。
+-   请注意，我们的伪代码中的语言具有一些独特的功能。首先，其中一些行以动词开头，例如_“pick up”、_ _“open”、_ _“look at”。_稍后我们将调用这些_函数_。
+-   其次，请注意某些行包含`if`或`else if.`这些称为_条件语句_。
+-   第三，请注意如何存在可以被表述为_真_或_假的表达方式，_例如“人在书的前面”。我们称这些_为布尔表达式_。
+-   最后，请注意这些语句如何类似于“返回到第 3 行”。我们称这些为_循环_。
+-   这些构建块是编程的基础。
+-   在下面讨论的_Scratch_上下文中，我们将使用上述每个基本编程构建块。
 
-## [Artificial Intelligence](https://cs50.harvard.edu/x/2024/notes/0/#artificial-intelligence)
+##  [人工智能](https://cs50.harvard.edu/x/2024/notes/0/#artificial-intelligence)
 
--   Consider how we can utilize the building blocks above to start creating our own artificial intelligence. Look at the following pseudocode:
+-   考虑一下我们如何利用上面的构建模块来开始创建我们自己的人工智能。看下面的伪代码：
     
     ```
     If student says hello
@@ -195,156 +194,156 @@ sidebar_position: 2
     ...
     ```
     
-    Notice how just to program a handful of interactions, many lines of code would be required. How many lines of code would be required for thousands or tens of thousands of possible interactions?
+    请注意，仅对少量交互进行编程就需要许多行代码。数千或数万种可能的交互需要多少行代码？
     
--   `large language models` look at patterns in large blocks of language. Such language models attempt to create a best guess of what words come after one another or alongside one another.
--   As very useful in many avenues of life and work, we stipulate that the utilization of AI-based software other than CS50’s own is _not reasonable_.
--   CS50’s own AI-based software tool called [CS50 Duck](https://cs50.ai/) is an AI helper that you can use during this course. It will help you, but not give away the entire answers to the course’s problems.
+-   `large language models`着眼于大型语言块中的模式。这种语言模型试图对哪些单词相继出现或并排出现进行最佳猜测。
+-   由于在生活和工作的许多方面都非常有用，我们规定除了CS50自己的软件之外，使用基于人工智能的软件是_不合理的_。
+-   CS50 自己的基于人工智能的软件工具[CS50 Duck](https://cs50.ai/)是您可以在本课程中使用的人工智能助手。它会对您有所帮助，但不会泄露课程问题的全部答案。
 
-## [Scratch](https://cs50.harvard.edu/x/2024/notes/0/#scratch)
+##  [划痕](https://cs50.harvard.edu/x/2024/notes/0/#scratch)
 
--   _Scratch_ is a visual programming language developed by MIT.
--   Scratch utilizes the same essential coding building blocks that we covered earlier in this lecture.
--   Scratch is a great way to get into computer programming because it allows you to play with these building blocks in a visual manner, not having to be concerned about the syntax of curly braces, semicolons, parentheses, and the like.
--   Scratch `IDE` (integrated development environment) looks like the following:
+-   _Scratch_是麻省理工学院开发的一种可视化编程语言。
+-   Scratch 使用了我们在本讲座前面介绍的相同的基本编码构建块。
+-   Scratch 是进入计算机编程的好方法，因为它允许您以可视化方式使用这些构建块，而不必担心大括号、分号、括号等语法。
+-   Scratch `IDE` （集成开发环境）如下所示：
     
     ![scratch interface](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide162.png "scratch interface")
     
-    Notice that on the left, there are _building blocks_ that you can use in your programming. To the immediate right of the building blocks, there is the area to which you can drag blocks to build a program. To the right of that, you see the _stage_ where a cat stands. The stage is where your programming comes to life.
+    请注意，左侧有可在编程中使用的_构建块_。在构建块的右侧，有一个区域，您可以将块拖到其中来构建程序。在它的右边，你会看到一只猫站立的_舞台_。舞台是您的编程得以实现的地方。
     
--   Scratch operates on a coordinate system as follows:
+-   Scratch 在坐标系上的操作如下：
     
     ![scratch coordinate system](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide167.png "scratch coordinate system")
     
-    Notice that the center of the stage is at coordinate (0,0). Right now, the cat’s position is at that same position.
+    请注意，舞台中心位于坐标 (0,0) 处。现在，猫的位置是在同一个位置。
     
 
-## [Hello World](https://cs50.harvard.edu/x/2024/notes/0/#hello-world)
+##  [你好世界](https://cs50.harvard.edu/x/2024/notes/0/#hello-world)
 
--   To begin, drag the “when green flag clicked” building block to the programming area. Then, drag the `say` building block to the programming area and attach it to the previous block.
+-   首先，将“当绿旗点击时”构建块拖到编程区域。然后，将`say`构建块拖到编程区域并将其附加到前一个块上。
     
-    Notice that when you click the green flag now, on the stage, the cat says, “hello world.”
+    请注意，当您现在单击舞台上的绿旗时，猫会说：“你好，世界。”
     
--   This illustrates quite well what we were discussing earlier regarding programming:
+-   这很好地说明了我们之前讨论的有关编程的内容：
     
     ![scratch with black box](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Slide172.png "scratch with black box")
     
-    Notice that the input `hello world` is passed to the function `say`, and the _side effect_ of that function running is the cat saying `hello world`.
+    请注意，输入`hello world`被传递给函数`say` ，并且该函数运行的_副作用_是猫说`hello world` 。
     
 
-## [Hello, You](https://cs50.harvard.edu/x/2024/notes/0/#hello-you)
+##  [你好，你](https://cs50.harvard.edu/x/2024/notes/0/#hello-you)
 
--   We can make your program more interactive by having the cat say `hello` to someone specific. Modify your program as below:
+-   我们可以让猫向特定的人`hello` ，从而使您的程序更具交互性。修改你的程序如下：
     
-    Notice that when the green flag is clicked, the function `ask` is run. The program prompts you, the user, `What's your name?` It then stores that name in the _variable_ called `answer`. The program then passes `answer` to a special function called `join`, which combines two strings of text `hello`, and whatever name was provided. These collectively are passed to the `say` function. The cat says, `Hello,` and a name. Your program is now interactive.
+    请注意，当单击绿色标志时，将运行`ask`函数。程序会提示用户， `What's your name?`然后，它将该名称存储在名为`answer`的_变量_中。然后，程序将`answer`传递给一个名为`join`的特殊函数，该函数组合了两个文本字符串`hello`以及提供的任何名称。这些共同传递给`say`函数。猫说： `Hello,`还有名字。”您的程序现在是交互式的。
     
--   Quite similarly, we can modify our program as follows:
+-   非常类似，我们可以修改我们的程序如下：
     
-    Notice that this program, when the green flag is clicked, passes the same variable, joined with `hello`, to a function called `speak`.
+    请注意，当单击绿色标志时，该程序将与`hello`连接的同一变量传递给名为`speak`函数。
     
 
-## [Meow and Abstraction](https://cs50.harvard.edu/x/2024/notes/0/#meow-and-abstraction)
+##  [喵与抽象](https://cs50.harvard.edu/x/2024/notes/0/#meow-and-abstraction)
 
--   Along with pseudocoding, _abstraction_ is an essential skill and concept within computer programming.
--   Abstraction is the act of simplifying a problem into smaller and smaller problems.
--   For example, if you were hosting a huge dinner for your friends, the _problem_ of having to cook the entire meal could be quite overwhelming! However, if you break down the task of cooking the meal into smaller and smaller tasks (or problems), the big task of creating this delicious meal might feel less challenging.
--   In programming, and even within Scratch, we can see abstraction in action. In your programming area, program as follows:
+-   与伪编码一样，_抽象_也是计算机编程中的一项基本技能和概念。
+-   抽象是将问题简化为越来越小的问题的行为。
+-   例如，如果您要为朋友举办一场盛大的晚宴，那么必须煮整顿饭的_问题_可能会令人难以承受！然而，如果你把做饭的任务分解成越来越小的任务（或问题），那么制作这顿美味佳肴的大任务可能会感觉不那么具有挑战性。
+-   在编程中，甚至在 Scratch 中，我们可以看到抽象的实际应用。在您的编程区域中，编程如下：
     
-    Notice that you are doing the same thing over and over again. Indeed, if you see yourself repeatedly coding the same statements, it’s likely the case that you could program more artfully – abstracting away this repetitive code.
+    请注意，您正在一遍又一遍地做同样的事情。事实上，如果您发现自己重复编写相同的语句，那么您可能可以更巧妙地进行编程 - 抽象出这些重复的代码。
     
--   You can modify your code as follows:
+-   您可以按如下方式修改您的代码：
     
-    Notice that the loop does exactly as the previous program did. However, the problem is simplified by abstracting away the repetition to a block that _repeats_ the code for us.
+    请注意，循环的执行方式与之前的程序完全相同。然而，通过将重复抽象为一个为我们_重复_代码的块，问题得到了简化。
     
--   We can even advance this further by using the `define` block, where you can create your own block (your own function)! Write code as follows:
+-   我们甚至可以通过使用`define`块进一步推进这一点，您可以在其中创建自己的块（您自己的函数）！编写代码如下：
     
-    Notice that we are defining our own block called `meow`. The function plays the sound `meow`, then waits one second. Below that, you can see that when the green flag is clicked, our meow function is repeated three times.
+    请注意，我们正在定义自己的块，称为`meow` 。该函数播放声音`meow` ，然后等待一秒钟。在下面，您可以看到当单击绿旗时，我们的喵叫函数会重复三次。
     
--   We can even provide a way by which the function can take an input `n` and repeat a number of times:
+-   我们甚至可以提供一种方法，使函数可以接受输入`n`并重复多次：
     
-    Notice how `n` is taken from “meow n times.” `n` is passed to the meow function through the `define` block.
+    注意`n`是如何从“meow n times”中取出的。 `n`通过`define`块传递给 meow 函数。
     
--   The cat, by the way, we can call a `sprite` – a general term used in game programming for an object or character on the screen with which the player will interact.
+-   顺便说一句，我们可以将猫称为“ `sprite` ”，这是游戏编程中用于与玩家交互的屏幕上的对象或角色的通用术语。
 
-## [Conditionals](https://cs50.harvard.edu/x/2024/notes/0/#conditionals)
+##  [条件句](https://cs50.harvard.edu/x/2024/notes/0/#conditionals)
 
--   _conditionals_ are an essential building block of programming, where the program looks to see if a specific condition has been met. If a condition is met, the program does something.
--   To illustrate a conditional, write code as follows:
+-   _条件_是编程的一个重要组成部分，程序会在其中查看是否满足特定条件。如果满足条件，程序就会执行某些操作。
+-   为了说明条件，请编写如下代码：
     
-    Notice that the `forever` block is utilized such that the `if` block is triggered over and over again, such that it can check continuously if the cat is touching the mouse pointer.
+    请注意，使用了`forever`块，以便一遍又一遍地触发`if`块，这样它就可以连续检查猫是否正在触摸鼠标指针。
     
--   We can modify our program as follows to integrate video sensing:
+-   我们可以如下修改我们的程序来集成视频传感：
     
--   Remember, programming is often a process of trial and error. If you get frustrated, take time to talk yourself through the problem at hand. What is the specific problem that you are working on right now? What is working? What is not working?
+-   请记住，编程通常是一个反复试验的过程。如果您感到沮丧，请花时间与自己讨论当前的问题。您现在正在解决的具体问题是什么？什么在起作用？什么不起作用？
 
-## [Oscartime](https://cs50.harvard.edu/x/2024/notes/0/#oscartime)
+##  [奥斯卡时间](https://cs50.harvard.edu/x/2024/notes/0/#oscartime)
 
--   We showed you in this lecture a number of Scratch programs to stoke your imagination.
--   _Oscartime_ is one of David’s own Scratch programs – though the music may haunt him because of the number of hours he listened to it while creating this program. Take a few moments to play through the game yourself.
--   Building Oscartime ourselves, we first add the lamp post.
+-   我们在本次讲座中向您展示了一些 Scratch 程序来激发您的想象力。
+-   _Oscartime_是 David 自己的 Scratch 程序之一 - 尽管音乐可能会困扰他，因为他在创建该程序时听了很多个小时。花一些时间自己玩一下游戏。
+-   我们自己构建 Oscartime，首先添加灯柱。
     
     ![oscartime interface](https://cs50.harvard.edu/x/2024/notes/0/cs50Week0Scratch10.png "oscartime interface")
     
--   Then, write code as follows:
+-   然后，编写代码如下：
     
-    Notice that moving your mouse over Oscar changes his costume. You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/565100517).
+    请注意，将鼠标移到奥斯卡上会改变他的服装。您可以通过[探索这些代码块](https://scratch.mit.edu/projects/565100517)了解更多信息。
     
--   Then, modify your code as follow to create a falling piece of trash:
+-   然后，按如下方式修改代码以创建一块掉落的垃圾：
     
-    Notice that the trash’s position on the y-axis always begins at 180. The x position is randomized. While the trash is above the floor, it goes down 3 pixels at a time. You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/565117390).
+    请注意，垃圾在 y 轴上的位置始终从 180 开始。x 位置是随机的。当垃圾在地板上方时，它会一次下降 3 个像素。您可以通过[探索这些代码块](https://scratch.mit.edu/projects/565117390)了解更多信息。
     
--   Next, modify your code as follows to allow for the possibility of dragging trash.
+-   接下来，按如下方式修改代码以允许拖动垃圾的可能性。
     
-    You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/565119737).
+    您可以通过[探索这些代码块](https://scratch.mit.edu/projects/565119737)了解更多信息。
     
--   Next, we can implement the scoring variables as follows:
+-   接下来，我们可以按如下方式实现评分变量：
     
-    You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/565472267).
+    您可以通过[探索这些代码块](https://scratch.mit.edu/projects/565472267)了解更多信息。
     
--   Go try the full game [Oscartime](https://scratch.mit.edu/projects/277537196).
+-   去尝试完整的游戏[Oscartime 吧](https://scratch.mit.edu/projects/277537196)。
 
-## [Ivy’s Hardest Game](https://cs50.harvard.edu/x/2024/notes/0/#ivys-hardest-game)
+##  [艾维最难的游戏](https://cs50.harvard.edu/x/2024/notes/0/#ivys-hardest-game)
 
--   Moving away from Oscartime to Ivy’s Hardest Game, we can now imagine how to implement movement within our program.
--   Our program has three main components.
--   First, write code as follows:
+-   从奥斯卡时间到常春藤最难的游戏，我们现在可以想象如何在我们的程序中实现运动。
+-   我们的计划由三个主要部分组成。
+-   首先编写代码如下：
     
-    Notice that when the green flag is clicked, our sprite moves to the center of the stage at coordinates (0,0) and then listens for the keyboard and checks for walls forever.
+    请注意，当单击绿色旗帜时，我们的精灵会移动到舞台中心坐标 (0,0) 处，然后监听键盘并永远检查墙壁。
     
--   Second, add this second group of code blocks:
+-   其次，添加第二组代码块：
     
-    Notice how we have created a custom `listen for keyboard` script. For each of our arrow keys on the keyboard, it will move the sprite around the screen.
+    请注意我们如何创建自定义的`listen for keyboard`脚本。对于键盘上的每个箭头键，它都会在屏幕上移动精灵。
     
--   Finally, add this group of code blocks:
+-   最后添加这组代码块：
     
-    Notice how we also have a custom `feel for walls` script. When a sprite touches a wall, it moves it back to a safe position – preventing it from walking off the screen.
+    请注意我们如何`feel for walls` 。当精灵接触到墙壁时，它会将其移回安全位置，防止它离开屏幕。
     
--   You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/326129433).
--   Go try the full game [Ivy’s Hardest Game](https://scratch.mit.edu/projects/326129433/).
--   Scratch allows for many sprites to be on the screen at once.
--   Adding another sprite, add the following code blocks to your program:
+-   您可以通过[探索这些代码块](https://scratch.mit.edu/projects/326129433)了解更多信息。
+-   去尝试完整版[《常春藤最难的游戏》](https://scratch.mit.edu/projects/326129433/)吧。
+-   Scratch 允许多个精灵同时出现在屏幕上。
+-   添加另一个精灵，将以下代码块添加到您的程序中：
     
-    Notice how the Yale sprite seems to get in the way of the Harvard sprite by moving back and forth. When it bumps into a wall, it turns around until it bumps the wall again. You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/565127193).
+    请注意，耶鲁精灵似乎是如何通过来回移动来妨碍哈佛精灵的。当它撞到墙壁时，它会转身，直到再次撞到墙壁。您可以通过[探索这些代码块](https://scratch.mit.edu/projects/565127193)了解更多信息。
     
--   You can even make a sprite follow another sprite. Adding another sprite, add the following code blocks to your program:
+-   您甚至可以让一个精灵跟随另一个精灵。添加另一个精灵，将以下代码块添加到您的程序中：
     
-    Notice how the MIT logo now seems to follow around the Harvard one. You can learn more by [exploring these code blocks](https://scratch.mit.edu/projects/565479840).
+    请注意，麻省理工学院的徽标现在似乎是围绕着哈佛大学的徽标。您可以通过[探索这些代码块](https://scratch.mit.edu/projects/565479840)了解更多信息。
     
--   Go try the full game [Ivy’s Hardest Game](https://scratch.mit.edu/projects/565742837).
+-   去尝试完整版[《常春藤最难的游戏》](https://scratch.mit.edu/projects/565742837)吧。
 
-## [Summing Up](https://cs50.harvard.edu/x/2024/notes/0/#summing-up)
+##  [总结](https://cs50.harvard.edu/x/2024/notes/0/#summing-up)
 
-In this lesson, you learned how this course sits in the wide world of computer science and programming. You learned…
+在本课程中，您了解了本课程在计算机科学和编程的广阔世界中的地位。你学到了……
 
--   Few students come to this class with prior programming experience!
--   You are not alone! You are part of a community.
--   Problem solving is the essence of the work of computer scientists.
--   This course is not simply about programming – this course will introduce you to a new way of learning that you can apply to almost every area of life.
--   How numbers, text, images, music, and video are understood by computers.
--   The fundamental programming skill of pseudocoding.
--   Reasonable and unreasonable ways to utilize AI in this course.
--   How abstraction will play a role in your future work in this course.
--   The basic building blocks of programming, including functions, conditionals, loops, and variables.
--   How to build a project in Scratch.
+-   很少有学生有编程经验来参加这门课！
+-   你并不孤单！您是社区的一部分。
+-   解决问题是计算机科学家工作的本质。
+-   本课程不仅仅是关于编程——本课程将向您介绍一种新的学习方式，您可以将其应用于几乎生活的每个领域。
+-   计算机如何理解数字、文本、图像、音乐和视频。
+-   伪编码的基本编程技能。
+-   在本课程中使用人工智能的合理和不合理的方式。
+-   抽象将如何在您未来的本课程工作中发挥作用。
+-   编程的基本构建块，包括函数、条件、循环和变量。
+-   如何在 Scratch 中构建项目。
 
-See you next time!
+ 下次见！
